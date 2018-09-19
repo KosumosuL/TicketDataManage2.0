@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="forXml">
+    <class name="User" table="user">
+        <id name="id" type="string" column="id">
+            <generator class="assigned"/>
+        </id>
+        <property name="pwd" type="string" column="pwd" />
+        <property name="name" type="string" column="name" />
+        <property name="baddr" type="string" column="baddr" />
+        <property name="bdate" type="string" column="bdate" />
+        <property name="id_num" type="string" column="id_num" />
+        <property name="tel" type="string" column="tel" />
+        <property name="view" type="boolean" column="view" />
+        <property name="sear" type="boolean" column="sear" />
+        <property name="tadd" type="boolean" column="tadd" />
+        <property name="statis" type="boolean" column="statis" />
+        <property name="inut" type="boolean" column="inut" />
+    </class>
+
+</hibernate-mapping>

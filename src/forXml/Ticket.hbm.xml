@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="forXml">
+    <class name="Ticket" table="ticket">
+        <id name="ticketnumber" type="string" column="ticketnumber">
+            <generator class="assigned"/>
+        </id>
+        <property name="ipccustomer" type="string" column="ipccustomer" />
+        <property name="customercode" type="string" column="customercode" />
+        <property name="cause" type="string" column="cause" />
+        <property name="summary" type="string" column="summary" />
+        <property name="componenttype" type="string" column="componenttype" />
+        <property name="ostype" type="string" column="ostype" />
+        <property name="identifier" type="string" column="identifier" />
+        <property name="ticketstatus" type="string" column="ticketstatus" />
+        <property name="lastoccurrence" type="string" column="lastoccurrence" />
+        <property name="node" type="string" column="node" />
+        <property name="resolution" type="string" column="resolution" />
+        <property name="servername" type="string" column="servername" />
+        <property name="alertgroup" type="string" column="alertgroup" />
+        <property name="component" type="string" column="component" />
+        <property name="firstoccurrence" type="string" column="firstoccurrence" />
+        <property name="severity" type="string" column="severity" />
+    </class>
+
+</hibernate-mapping>
