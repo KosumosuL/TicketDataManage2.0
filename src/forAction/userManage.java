@@ -239,8 +239,14 @@ public class userManage extends HttpServlet {
                 Element severity = event.addElement("SEVERITY");severity.setText(tmp.getSeverity());
 
                 String fileName = "ticket_" + tmp.getTicketnumber() + ".xml";
-                String downloadPath = getServletContext().getRealPath("/") + File.separator + DOWNLOAD_DIRECTORY + File.separator + fileName;
+                String downloadPath = getServletContext().getRealPath("/") + DOWNLOAD_DIRECTORY;
                 System.out.println(downloadPath);
+                File downloadDir = new File(downloadPath);
+                if(!downloadDir.isDirectory()){
+                    downloadDir.mkdir();
+                }
+
+                downloadPath = getServletContext().getRealPath("/") + File.separator + DOWNLOAD_DIRECTORY + File.separator + fileName;
                 //用于格式化xml内容和设置头部标签
                 OutputFormat format = OutputFormat.createPrettyPrint();
                 //设置xml文档的编码为utf-8

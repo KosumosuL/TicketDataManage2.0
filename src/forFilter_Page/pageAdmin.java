@@ -9,8 +9,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
+//import forDao.AdminDao;
+//import forDao.UserDao;
 import forDao.AdminDao;
-import forDao.UserDao;
 import forTest.testPage;
 import forXml.*;
 
@@ -30,39 +31,95 @@ public class pageAdmin extends HttpServlet {
 
         // filter
         HttpSession session=req.getSession();
-        System.out.println(session.getAttribute("_adminid_"));
         if(session.getAttribute("_adminid_") == null){
             resp.sendRedirect("filter.jsp");
             return;
         }
 
-        // page
-        AdminDao adm = new AdminDao();
-        List<User> userl = adm.getallUser();
-        System.out.println(userl.size());
+
+        List<User> users;
+        boolean isPage = true, isusersPerPage = true;
+        int page, usersPerPage;
         String p = req.getParameter("page");
-        int page;
         try {
             page = Integer.valueOf(p);
         } catch (NumberFormatException e) {
             page = 1;
+            isPage = false;
         }
-
-        int totalUsers = userl.size();
-        int usersPerPage = 20;
+//        如果url变量中有page，则必为翻页
+        if(isPage){
+            users = (List<User>)session.getAttribute("users");
+            usersPerPage = (int)session.getAttribute("usersPerPage");
+        }
+        else{
+//            如果url变量中有usersPerPage，则必为调整显示
+            String tpp = req.getParameter("usersPerPage");
+            try {
+                usersPerPage = Integer.valueOf(tpp);
+            } catch (NumberFormatException e) {
+                usersPerPage = 10;
+                isusersPerPage = false;
+            }
+            if(isusersPerPage){
+                users = (List<User>)session.getAttribute("users");
+                boolean name_display = req.getParameter("name_display") != null;
+                boolean pwd_display = req.getParameter("pwd_display") != null;
+                boolean baddr_display = req.getParameter("baddr_display") != null;
+                boolean bdate_display = req.getParameter("bdate_display") != null;
+                boolean id_num_display = req.getParameter("id_num_display") != null;
+                boolean tel_display = req.getParameter("tel_display") != null;
+                boolean authority_display = req.getParameter("authority_display") != null;
+                session.setAttribute("name_display", name_display);
+                session.setAttribute("pwd_display", pwd_display);
+                session.setAttribute("baddr_display", baddr_display);
+                session.setAttribute("bdate_display", bdate_display);
+                session.setAttribute("id_num_display", id_num_display);
+                session.setAttribute("tel_display", tel_display);
+                session.setAttribute("authority_display", authority_display);
+                session.setAttribute("usersPerPage", usersPerPage);
+            }
+            else{
+//                若没有url变量，则必为初始化或者其他servlet跳转
+                /*  test
+                testPage pg = new testPage();
+                users = pg.listAllUsers();*/
+                AdminDao adm = new AdminDao();
+                users = adm.getallUser();
+                session.setAttribute("users", users);
+                try {
+//                    若session中有usersPerPage，则为其他servlet跳转
+                    usersPerPage = (int)session.getAttribute("usersPerPage");
+                } catch (Exception e) {
+//                    若session中没有usersPerPage，则为初始化
+                    usersPerPage = 10;
+                    /*  test
+                    session.setAttribute("_adminid_", "007");
+                    session.setAttribute("_adminname_", "James Bond");
+                    session.setAttribute("_adminpwd_", "007");
+                    session.setAttribute("_adminbaddr_", "国外");
+                    session.setAttribute("_adminbdate_", "1962-10-5");
+                    session.setAttribute("_adminid_num_", "007");
+                    session.setAttribute("_admintel_", "007");*/
+//                    default setting
+                    session.setAttribute("name_display", true);
+                    session.setAttribute("baddr_display", true);
+                    session.setAttribute("bdate_display", true);
+                    session.setAttribute("authority_display", true);
+                    session.setAttribute("usersPerPage", usersPerPage);
+                }
+            }
+        }
+        int totalUsers = users.size();
         int totalPages = totalUsers % usersPerPage == 0 ? totalUsers / usersPerPage : totalUsers / usersPerPage + 1;
         int beginIndex = (page - 1) * usersPerPage;
         int endIndex = beginIndex + usersPerPage;
-        if (endIndex > totalUsers)
-            endIndex = totalUsers;
+        if (endIndex > totalUsers) { endIndex = totalUsers; }
+        List<User> currentPageUsers = users.subList(beginIndex,endIndex);
         req.setAttribute("totalUsers", totalUsers);
-        req.setAttribute("usersPerPage", usersPerPage);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("beginIndex", beginIndex);
-        req.setAttribute("endIndex", endIndex);
         req.setAttribute("page", page);
-        req.setAttribute("users", userl);
+        req.setAttribute("currentPageUsers", currentPageUsers);
         req.getRequestDispatcher("adminManage.jsp").forward(req, resp);
-
     }
 }

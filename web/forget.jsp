@@ -2,11 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="2-6">
-    <link rel="icon" href="icon/ticket.ico">
+    <link rel="icon" href="icon/favicon.ico">
     <title>修改密码</title>
     <link href="static.bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static.bootstrap/css/signin.css" rel="stylesheet">
@@ -17,17 +13,37 @@
             background-size: cover;
         }
     </style>
+    <script type="text/javascript">
+        function showalert(alertInfo){
+            var clear = false;
+            if(alertInfo==null){
+                alertInfo = '<%=session.getAttribute("alert")%>';
+                clear = true;
+            }
+            if(alertInfo!='null'){
+                var url = "alert.jsp?alert=" + alertInfo;
+                var name = "警告";
+                var iWidth = 400;
+                var iHeight = 180;
+                var iTop = (window.screen.height-30-iHeight)/2;
+                var iLeft = (window.screen.width-10-iWidth)/2;
+                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
+                if(clear){
+                    <%session.removeAttribute("alert");%>
+                }
+            }
+        }
+    </script>
 </head>
-
-<body>
+<body onload="showalert(null)">
 <div class="navbar-wrapper">
     <div class="container">
-
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -40,22 +56,25 @@
                         <li><a href="login.jsp">登录</a></li>
                         <li><a href="register.jsp">注册</a></li>
                         <li class="dropdown active">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-header">用户</li>
-                                <li><a href=".adminManage">查看</a></li>
-                                <li class="active"><a href="#">修改密码</a></li>
+                                <li><a href=".adminManage">总览</a></li>
+                                <li class="active"><a href="">修改密码</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">工作票</li>
-                                <li><a href=".userManage">查看</a></li>
-                                <li><a href="statistics.jsp">统计分析</a></li>
+                                <li><a href=".userManage">总览</a></li>
+                                <li><a href="search.jsp">查询</a></li>
                             </ul>
                         </li>
+                        <%--<li><a href="personal.jsp">个人信息</a></li>--%>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="acknowledge.jsp">致谢</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-
     </div>
 </div>
 <br>
@@ -71,8 +90,8 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <span class="input-group-addon" style="width: 85px;text-align: center;">账号</span>
-                        <input type="text" class="form-control" name="id" aria-describedby="basic-addon1" style="width: 250px;">
+                        <span class="input-group-addon" style="width: 85px;text-align: center;">ID</span>
+                        <input type="text" class="form-control" name="id" style="width: 250px;">
                     </div>
                 </td>
             </tr>
@@ -90,7 +109,7 @@
                 <td>
                     <div class="input-group">
                         <span class="input-group-addon" style="width: 85px;text-align: center;">身份证号</span>
-                        <input type="text" class="form-control" name="id_num" aria-describedby="basic-addon1" placeholder="15或18位有效身份证号" style="width: 250px;">
+                        <input type="text" class="form-control" name="id_num" placeholder="15或18位有效身份证号" style="width: 250px;">
                     </div>
                 </td>
             </tr>
@@ -108,7 +127,7 @@
                 <td>
                     <div class="input-group">
                         <span class="input-group-addon" style="width: 85px;text-align: center;">新密码</span>
-                        <input type="password" class="form-control" name="pwd" aria-describedby="basic-addon1" placeholder="8-16位数字和字母,至少2位数字" style="width: 250px;">
+                        <input type="password" class="form-control" name="pwd" placeholder="8-16位数字和字母,至少2位数字" style="width: 250px;">
                     </div>
                 </td>
             </tr>
@@ -134,7 +153,7 @@
                     <script language="javascript">
                         function check(){
                             if(forget.id.value=="" || forget.pwd.value=="" || forget.id_num.value=="") {
-                                alert("信息填写不完整，请重新输入!");
+                                showalert("信息填写不完整");
                                 return false;
                             }
                             return true;
@@ -145,8 +164,6 @@
             </tr>
         </table>
     </form>
-
-
 </div> <!-- /container -->
 
 <!-- Bootstrap core JavaScript

@@ -117,6 +117,16 @@ public class AdminDao  {
         return res;
     }
 
+    public Admin getadminbyid(String _id) {
+        openSession();
+
+        Query query=s.createQuery("from Admin where id=:id").setParameter("id", _id);
+        List<Admin> list=query.list();
+        closeSession(false);
+
+        return list.get(0);
+    }
+
     public void printAdmin(String id){
         openSession();
 

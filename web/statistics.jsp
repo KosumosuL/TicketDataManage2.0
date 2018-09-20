@@ -32,25 +32,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.jsp">工作票数据管理系统</a>
+                    <a class="navbar-brand" href="logout.jsp">工作票数据管理系统</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="index.jsp">总览</a></li>
-                        <li><a href="login.jsp">登录</a></li>
-                        <li><a href="register.jsp">注册</a></li>
-                        <li class="dropdown active">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-header">用户</li>
-                                <li><a href="userManage.jsp">查看</a></li>
-                                <li><a href="forget.jsp">修改密码</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">工作票</li>
-                                <li><a href="ticketManage.jsp">查看</a></li>
-                                <li class="active"><a href="#">统计分析</a></li>
-                            </ul>
-                        </li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a onclick="javascript:history.back(-1);">返回</a></li>
+                        <li><a href="logout.jsp">退出</a></li>
                     </ul>
                 </div>
             </div>
