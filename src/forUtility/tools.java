@@ -48,40 +48,40 @@ public class tools {
 
     //身份证号校验：先保证全为15或18位数字，再具体校验
     public boolean valid_id_num(String baddr, String bdate, String id_num ){
-        return true;
-//        String reg = "[0-9]";
-//        if(!Pattern.matches(reg, id_num))   return false;
-//        if(id_num == null || (id_num.length() != 15 && id_num.length() != 18))  return false;
-//        final char[] cs = id_num.toUpperCase().toCharArray();
-//        // （1）校验位数
-//        int power = 0;
-//        for (int i = 0; i < cs.length; i++) {
-//            if (i == cs.length - 1 && cs[i] == 'X') break;
-//            if (cs[i] < '0' || cs[i] > '9') return false;
-//            if (i < cs.length - 1) power += (cs[i] - '0') * POWER_LIST[i];
-//        }
-//        // （2）校验区位码
-//        if(addrmap.get(Integer.valueOf(id_num.substring(0, 2))) != baddr)   return false;
-//
-//        String[] subbdate = bdate.split("-");
-//        // （3）校验年份
-//        String year = id_num.length() == 15 ? "19" + id_num.substring(6, 8) : id_num.substring(6, 10);
-//        if (year != subbdate[0]) return false;
-//        // （4）校验月份
-//        String month = id_num.length() == 15 ? id_num.substring(8, 10) : id_num.substring(10, 12);
-//        if (month != subbdate[1]) return false;
-//        // （5）校验天数
-//        String day = id_num.length() == 15 ? id_num.substring(10, 12) : id_num.substring(12, 14);
-//        if (day != subbdate[2]) return false;
-//
-//        // （7）校验“校验码”
-//        if (id_num.length() == 15)
-//            return true;
-//        return cs[cs.length - 1] == PARITYBIT[power % 11];
+//        return true;
+        String reg = "^[A-Z0-9]*$";
+        if(!Pattern.matches(reg, id_num))   return false;
+        if(id_num == null || (id_num.length() != 15 && id_num.length() != 18))  return false;
+        final char[] cs = id_num.toUpperCase().toCharArray();
+        System.out.println("ok");
+        // （1）校验位数
+        int power = 0;
+        for (int i = 0; i < cs.length; i++) {
+            if (i == cs.length - 1 && cs[i] == 'X') break;
+            if (cs[i] < '0' || cs[i] > '9') return false;
+            if (i < cs.length - 1) power += (cs[i] - '0') * POWER_LIST[i];
+        }
+        // （2）校验区位码
+        if(!addrmap.get(Integer.valueOf(id_num.substring(0, 2))).equals(baddr))   return false;
+        System.out.println("ok");
+        String[] subbdate = bdate.split("-");
+        // （3）校验年份
+        String year = id_num.length() == 15 ? "19" + id_num.substring(6, 8) : id_num.substring(6, 10);
+        if (!year.equals(subbdate[0])) return false;
+        // （4）校验月份
+        String month = id_num.length() == 15 ? id_num.substring(8, 10) : id_num.substring(10, 12);
+        if (!month.equals(subbdate[1])) return false;
+        // （5）校验天数
+        String day = id_num.length() == 15 ? id_num.substring(10, 12) : id_num.substring(12, 14);
+        if (!day.equals(subbdate[2])) return false;
+        System.out.println("ok");
+        // （7）校验“校验码”
+        if (id_num.length() == 15)  return true;
+        return cs[cs.length - 1] == PARITYBIT[power % 11];
     }
 
     public boolean valid_id_num(String id_num){
-        String reg = "[0-9]";
+        String reg = "^[A-Z0-9]*$";
         if(!Pattern.matches(reg, id_num))   return false;
         if(id_num.length() != 15 && id_num.length() != 18)  return false;
         return true;
@@ -96,15 +96,14 @@ public class tools {
 
     //pwd校验：只能包含数字和字母，长度在8-16之间，至少包含2数字
     public boolean valid_pwd(String pwd){
-        String reg1 = "[a-zA-Z0-9]{8,16}";  //只能包含数字和字母，长度在8-16之间
-        String reg2 = ".*\\d.*\\d.*";       //至少包含2数字
-        if(Pattern.matches(reg1, pwd) && Pattern.matches(reg2, pwd)) return true;
+        String reg= "^[a-zA-Z0-9]{8,16}$";  //只能包含数字和字母，长度在8-16之间
+        if(Pattern.matches(reg, pwd)) return true;
         return false;
     }
 
     //tel校验：只能包含数字，长度在8-16之间
     public boolean valid_tel(String tel){
-        String reg = "[0-9]{8,16}";
+        String reg = "^\\d{8,16}$";
         if(Pattern.matches(reg, tel))   return true;
         return false;
     }
@@ -170,11 +169,22 @@ public class tools {
     }
 
     public String getBaddr(String idx){
-        String reg = "[0-9]";
-        if(!Pattern.matches(reg, idx))   return "cannot";
+        String reg = "^[0-9]*$";
+        if(!Pattern.matches(reg, idx))   return "";
         int id = Integer.parseInt(idx);
-        if(!addrmap.containsKey(id))    return "cannot";
-
+        if(!addrmap.containsKey(id))    return "";
         return addrmap.get(id);
+    }
+
+    public String getBdate(String bdate){
+        String ans = "";
+        String[] subbdate = bdate.split("-");
+        ans += subbdate[0];
+        if(subbdate[1].length() == 1)   ans = ans + "-0" + subbdate[1];
+        else ans = ans + "-" + subbdate[1];
+        if(subbdate[2].length() == 1)   ans = ans + "-0" + subbdate[2];
+        else ans = ans + "-" + subbdate[2];
+        System.out.println(ans);
+        return ans;
     }
 }

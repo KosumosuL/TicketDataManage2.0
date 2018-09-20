@@ -7,6 +7,9 @@
     <link href="static.bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static.bootstrap/css/signin.css" rel="stylesheet">
     <link href="static.bootstrap/css/carousel.css" rel="stylesheet">
+    <link href="toastr/toastr.min.css" rel="stylesheet">
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="toastr/toastr.min.js"></script>
     <style type="text/css">
         body{
             background-image: url(bkimg/11.jpg);
@@ -14,6 +17,19 @@
         }
     </style>
     <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,                            //是否显示关闭按钮
+            "debug": false,                                 //是否使用debug模式
+            "positionClass": "toast-center-center",     //弹出窗的位置
+            "showDuration": "300",                          //显示的动画时间
+            "hideDuration": "1000",                         //消失的动画时间
+            "timeOut": "5000",                              //展现时间
+            "extendedTimeOut": "1000",                      //加长展示时间
+            "showEasing": "swing",                          //显示时的动画缓冲方式
+            "hideEasing": "linear",                         //消失时的动画缓冲方式
+            "showMethod": "fadeIn",                         //显示时的动画方式
+            "hideMethod": "fadeOut"                          //消失时的动画方式
+        };
         function showalert(alertInfo){
             var clear = false;
             if(alertInfo==null){
@@ -21,16 +37,14 @@
                 clear = true;
             }
             if(alertInfo!='null'){
-                var url = "alert.jsp?alert=" + alertInfo;
-                var name = "警告";
-                var iWidth = 400;
-                var iHeight = 180;
-                var iTop = (window.screen.height-30-iHeight)/2;
-                var iLeft = (window.screen.width-10-iWidth)/2;
-                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-                if(clear){
-                    <%session.removeAttribute("alert");%>
-                }
+                if(alertInfo=="pwd_invalid"){ toastr.error("密码无效，请重新填写！");}
+                else if(alertInfo=="id_num_invalid"){ toastr.error("身份证号无效，请重新填写！");}
+                else if(alertInfo=="tel_invalid"){ toastr.error("手机号码无效，请重新填写！");}
+                else if(alertInfo=="id_id_num"){ toastr.error('账号和身份证号不匹配！');}
+                else if(alertInfo=="notexist"){ toastr.error('账号不存在！');}
+                else if(alertInfo=="success"){ toastr.success('操作成功！');}
+                else { toastr.error('操作失败！');}
+                if(clear){ <%session.removeAttribute("alert");%>}
             }
         }
     </script>
@@ -153,7 +167,7 @@
                     <script language="javascript">
                         function check(){
                             if(forget.id.value=="" || forget.pwd.value=="" || forget.id_num.value=="") {
-                                showalert("信息填写不完整");
+                                toast.warning("信息填写不完整");
                                 return false;
                             }
                             return true;

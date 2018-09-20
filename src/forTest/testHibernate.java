@@ -48,6 +48,8 @@ public class testHibernate {
         addrmap.put(82, "澳门");
         addrmap.put(91, "国外");
     }
+    final static char[] PARITYBIT = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
+    final static int[] POWER_LIST = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
 
     final static List<String> ipccustomerl = Arrays.asList("American Express","ZTO Express","STO Express","SF Express","Yunda Express","Tiantian Express","YTO Express");
     final static List<String> customercodel = Arrays.asList("amx","dssd","cds","dfe","dfsda","lu","xi","dfe","qwq2","0kfd","bai","sid","dod","pop","cic");
@@ -55,6 +57,7 @@ public class testHibernate {
     final static List<String> componenttypel = Arrays.asList("Application","Concrete","Forfun","Industry","Agriculture","Business","Planting","Service");
     final static List<String> ostypel = Arrays.asList("WIN2K8","WIN2K9","WIN1K8","WIN3K7","WIN2K5","WIN2K3","WIN2K1","WIN2K0","WIN2K88");
     final static List<String> ticketstatusl = Arrays.asList("CLOSED","OPENED","BROKEN","LOSS","UNKNOWN");
+
     static void testAdmin() {
         AdminDao dao=new AdminDao();
 
@@ -77,7 +80,7 @@ public class testHibernate {
         System.out.println(pwd);
 
         String name = t.getCharAndNumr(t.getlen());
-        while(!t.valid_pwd(name)){
+        while(!t.valid_name(name)){
             name = t.getCharAndNumr(t.getlen());
         }
         System.out.println(name);
@@ -90,16 +93,27 @@ public class testHibernate {
         System.out.println(baddr);
 
         String bdate = t.getDate();
+        bdate = t.getBdate(bdate);
         System.out.println(bdate);
 
         String id_num=String.valueOf(idx);
         String[] subbdate = bdate.split("-");
-        id_num=id_num+t.getNum(4)+subbdate[0]+subbdate[1]+subbdate[2]+t.getNum(4);
+        id_num=id_num+t.getNum(4)+subbdate[0]+subbdate[1]+subbdate[2]+t.getNum(3);
         System.out.println(id_num);
+        final char[] cs = id_num.toUpperCase().toCharArray();
+        int power = 0;
+        for (int i = 0; i < cs.length; i++) {
+            power += (cs[i] - '0') * POWER_LIST[i];
+        }
+        System.out.println(power);
+        System.out.println(PARITYBIT[power % 11]);
+        id_num = id_num + PARITYBIT[power % 11];
+        System.out.println(id_num);
+        System.out.println(t.valid_id_num(baddr,bdate,id_num));
 
         String tel="1"+t.getNum(10);
         System.out.println(tel);
-
+        System.out.println(t.valid_tel(tel));
         AdminDao adm = new AdminDao();
         adm.addAdmin(id,pwd,name,baddr,bdate,id_num,tel);
     }
@@ -116,7 +130,7 @@ public class testHibernate {
         System.out.println(pwd);
 
         String name = t.getCharAndNumr(t.getlen());
-        while(!t.valid_pwd(name)){
+        while(!t.valid_name(name)){
             name = t.getCharAndNumr(t.getlen());
         }
         System.out.println(name);
@@ -129,15 +143,27 @@ public class testHibernate {
         System.out.println(baddr);
 
         String bdate = t.getDate();
+        bdate = t.getBdate(bdate);
         System.out.println(bdate);
 
         String id_num=String.valueOf(idx);
         String[] subbdate = bdate.split("-");
-        id_num=id_num+t.getNum(4)+subbdate[0]+subbdate[1]+subbdate[2]+t.getNum(4);
+        id_num=id_num+t.getNum(4)+subbdate[0]+subbdate[1]+subbdate[2]+t.getNum(3);
         System.out.println(id_num);
+        final char[] cs = id_num.toUpperCase().toCharArray();
+        int power = 0;
+        for (int i = 0; i < cs.length; i++) {
+            power += (cs[i] - '0') * POWER_LIST[i];
+        }
+        System.out.println(power);
+        System.out.println(PARITYBIT[power % 11]);
+        id_num = id_num + PARITYBIT[power % 11];
+        System.out.println(id_num);
+        System.out.println(t.valid_id_num(baddr,bdate,id_num));
 
         String tel="1"+t.getNum(10);
         System.out.println(tel);
+        System.out.println(t.valid_tel(tel));
 
         AdminDao adm = new AdminDao();
         adm.addUser(id,pwd,name,baddr,bdate,id_num,tel,t.getBool(),t.getBool(),t.getBool(),t.getBool(),t.getBool());
@@ -171,10 +197,10 @@ public class testHibernate {
 
     static public void main(String args[]) {
         //testAdmin();
-        for(int i=0;i<49;i++){
-            //generate_admin();
-            //generate_user();
-            generate_ticket();
+        for(int i=0;i<665;i++){
+            generate_admin();
+            generate_user();
+            //generate_ticket();
         }
 
 //        UserDao user = new UserDao();

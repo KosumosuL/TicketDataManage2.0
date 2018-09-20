@@ -7,6 +7,8 @@ import forUtility.tools;
 import forDao.*;
 import forXml.*;
 
+import javax.servlet.http.HttpSession;
+
 public class adminManage extends javax.servlet.http.HttpServlet {
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
     }
@@ -16,6 +18,7 @@ public class adminManage extends javax.servlet.http.HttpServlet {
     // 添加账号时在此函数自动调用生成id函数，存入数据库成功后显示
     protected void doAdd(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("utf-8");
+
         String add = request.getParameter("add");
         if(add != null){
             tools t = new tools();
@@ -27,6 +30,8 @@ public class adminManage extends javax.servlet.http.HttpServlet {
             baddr = t.getBaddr(baddr);
             System.out.println(baddr);
             String bdate = request.getParameter("bdate_add");
+            bdate = t.getBdate(bdate);
+            System.out.println(bdate);
             String id_num = request.getParameter("id_num_add");
             String tel = request.getParameter("tel_add");
             boolean view = request.getParameter("view_add") != null;
@@ -34,35 +39,47 @@ public class adminManage extends javax.servlet.http.HttpServlet {
             boolean tadd = request.getParameter("tadd_add") != null;
             boolean statis = request.getParameter("statis_add") != null;
             boolean inut = request.getParameter("inut_add") != null;
-
+            HttpSession session=request.getSession();
             System.out.println(id_num);
+
             // 1. valid pwd
             if(!t.valid_pwd(pwd)){
-                String script = "<script>alert('密码不合法，请重新填写');location.href='../.adminManage'</script>";
+                session.setAttribute("alert","pwd_invalid");
+                String script = "<script>location.href='../.adminManage'</script>";
                 response.getWriter().println(script);
+                return ;
             }
             // 2. valid name
             if(!t.valid_name(name)){
-                String script = "<script>alert('名称不合法，请重新填写');location.href='../.adminManage'</script>";
+                session.setAttribute("alert","name_invalid");
+                String script = "<script>location.href='../.adminManage'</script>";
                 response.getWriter().println(script);
+                return ;
             }
             // 3. valid id_num
-//            if(!t.valid_id_num(baddr, bdate, id_num)){
-//                String script = "<script>alert('身份证号不合法，请重新填写');location.href='../.adminManage'</script>";
-//                response.getWriter().println(script);
-//            }
+            if(!t.valid_id_num(baddr, bdate, id_num)){
+                session.setAttribute("alert","id_num_invalid");
+                String script = "<script>location.href='../.adminManage'</script>";
+                response.getWriter().println(script);
+            return ;
+            }
             // 4. valid tel
             if(!t.valid_tel(tel)){
-                String script = "<script>alert('号码不合法，请重新填写');location.href='../.adminManage'</script>";
+                session.setAttribute("alert","tel_invalid");
+                String script = "<script>location.href='../.adminManage'</script>";
                 response.getWriter().println(script);
+                return ;
             }
 
             if(adm.addUser(id,pwd,name,baddr,bdate,id_num,tel,view,sear,tadd,statis,inut)){
-                String script = "<script>alert('添加用户帐号成功,用户ID为：" + id + "');location.href='../.adminManage'</script>";
+                session.setAttribute("alert","success_add");
+                session.setAttribute("success_id",id);
+                String script = "<script>location.href='../.adminManage'</script>";
                 response.getWriter().println(script);
             }
             else{
-                String script = "<script>alert('添加帐号失败');location.href='../.adminManage'</script>";
+                session.setAttribute("alert","failure");
+                String script = "<script>location.href='../.adminManage'</script>";
                 response.getWriter().println(script);
             }
         }
@@ -78,15 +95,19 @@ public class adminManage extends javax.servlet.http.HttpServlet {
         for(int i=0;i<userl.size();i++){
             User tmp = userl.get(i);
             String str = "delete_" + tmp.getId();
-            System.out.println(str);
             if(request.getParameter(str) != null){
+                HttpSession session=request.getSession();
                 if(adm.deleteUser(tmp.getId())){
-                    String script = "<script>alert('删除帐号成功');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","success");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
                 else{
-                    String script = "<script>alert('删除帐号失败');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","failure");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
             }
         }
@@ -103,15 +124,16 @@ public class adminManage extends javax.servlet.http.HttpServlet {
             User tmp = userl.get(i);
             String str = "modify_" + tmp.getId();
             if(request.getParameter(str) != null){
-                System.out.println("sdfsdf");
                 tools t = new tools();
                 String pwd = request.getParameter("pwd_" + tmp.getId()); //不修改
                 String name = request.getParameter("name_" + tmp.getId());
                 String baddr = request.getParameter("baddr_" + tmp.getId());
                 baddr = t.getBaddr(baddr);
-                if(baddr.equals("cannot"))  baddr = request.getParameter("baddr_" + tmp.getId());
+                if(baddr.equals(""))  baddr = request.getParameter("baddr_" + tmp.getId());
                 System.out.println(baddr);
                 String bdate = request.getParameter("bdate_" + tmp.getId());
+                bdate = t.getBdate(bdate);
+                System.out.println(bdate);
                 String id_num = request.getParameter("id_num_" + tmp.getId());
                 String tel = request.getParameter("tel_" + tmp.getId());
                 boolean view = request.getParameter("view_" + tmp.getId()) != null;
@@ -119,34 +141,45 @@ public class adminManage extends javax.servlet.http.HttpServlet {
                 boolean tadd = request.getParameter("tadd_" + tmp.getId()) != null;
                 boolean statis = request.getParameter("statis_" + tmp.getId()) != null;
                 boolean inut = request.getParameter("inut_" + tmp.getId()) != null;
+                HttpSession session=request.getSession();
 
-                // 1. valid pwd    no need
-//                if(!t.valid_pwd(pwd)){
-//                    String script = "<script>alert('密码不合法，请重新填写');location.href='../mainAdmin.jsp'</script>";
-//                    response.getWriter().println(script);
-//                }
+                // 1. valid pwd
+                if(!t.valid_pwd(pwd)){
+                    session.setAttribute("alert","pwd_invalid");
+                    String script = "<script>location.href='../.adminManage'</script>";
+                    response.getWriter().println(script);
+                    return ;
+                }
                 // 2. valid name
                 if(!t.valid_name(name)){
-                    String script = "<script>alert('名称不合法，请重新填写');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","name_invalid");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
                 // 3. valid id_num
-//                if(!t.valid_id_num(baddr, bdate, id_num)){
-//                    String script = "<script>alert('身份证号不合法，请重新填写');location.href='../.adminManage'</script>";
-//                    response.getWriter().println(script);
-//                }
+                if(!t.valid_id_num(baddr, bdate, id_num)){
+                    session.setAttribute("alert","id_num_invalid");
+                    String script = "<script>location.href='../.adminManage'</script>";
+                    response.getWriter().println(script);
+                    return ;
+                }
                 // 4. valid tel
                 if(!t.valid_tel(tel)){
-                    String script = "<script>alert('号码不合法，请重新填写');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","tel_invalid");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
 
                 if(adm.deleteUser(tmp.getId()) && adm.addUser(tmp.getId(),pwd,name,baddr,bdate,id_num,tel,view,sear,tadd,statis,inut)){
-                    String script = "<script>alert('修改帐号成功');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","success");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
                 }
                 else{
-                    String script = "<script>alert('修改帐号失败');location.href='../.adminManage'</script>";
+                    session.setAttribute("alert","failure");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
                 }
             }
@@ -157,7 +190,6 @@ public class adminManage extends javax.servlet.http.HttpServlet {
     protected void service(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
 
-        System.out.println("1221");
         doAdd(request, response);
         dodelete(request, response);
         doModify(request, response);

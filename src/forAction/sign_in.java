@@ -27,12 +27,12 @@ public class sign_in extends HttpServlet {
         String id = request.getParameter("id");
         String pwd = request.getParameter("pwd");
         String identity = request.getParameter("identity");
+        HttpSession session=request.getSession();
 
         if(identity .equals("admin")) {
             AdminDao adm = new AdminDao();
             if(adm.findAdmin(id)) {
                 if(adm.checkAdmin(id, pwd)){
-                    HttpSession session=request.getSession();
                     Admin a = adm.getadminbyid(id);
                     session.setAttribute("_adminid_", id);
                     session.setAttribute("_adminname_", a.getName());
@@ -41,17 +41,20 @@ public class sign_in extends HttpServlet {
                     session.setAttribute("_adminbdate_", a.getBdate());
                     session.setAttribute("_adminid_num_", a.getId_num());
                     session.setAttribute("_admintel_", a.getTel());
-                    //session.setAttribute("identity", "admin");
-                    String script = "<script>alert('登录成功');location.href='../.adminManage'</script>";
+
+                    session.setAttribute("alert","login_success");
+                    String script = "<script>location.href='../.adminManage'</script>";
                     response.getWriter().println(script);
                 }
                 else{
-                    String script = "<script>alert('用户名或密码错误，请重新登陆');location.href='../login.jsp'</script>";
+                    session.setAttribute("alert","login_wrong");
+                    String script = "<script>location.href='../login.jsp'</script>";
                     response.getWriter().println(script);
                 }
             }
             else{
-                String script = "<script>alert('用户不存在，请重新登陆');location.href='../login.jsp'</script>";
+                session.setAttribute("alert","login_notexist");
+                String script = "<script>location.href='../login.jsp'</script>";
                 response.getWriter().println(script);
             }
         }
@@ -59,7 +62,6 @@ public class sign_in extends HttpServlet {
             UserDao user = new UserDao();
             if(user.findUser(id)) {
                 if(user.checkUser(id, pwd)){
-                    HttpSession session=request.getSession();
                     User u = user.getUserbyid(id);
                     session.setAttribute("_userid_", id);
                     session.setAttribute("_username_", u.getName());
@@ -73,34 +75,25 @@ public class sign_in extends HttpServlet {
                     session.setAttribute("_usertadd_ ", u.isTadd());
                     session.setAttribute("_userstatis_", u.isStatis());
                     session.setAttribute("_userinut_", u.isInut());
-                    String script = "<script>alert('登录成功');location.href='../.userManage'</script>";
+
+                    session.setAttribute("alert","login_success");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                 }
                 else{
-                    String script = "<script>alert('用户名或密码错误，请重新登陆');location.href='../login.jsp'</script>";
+                    session.setAttribute("alert","login_wrong");
+                    String script = "<script>location.href='../login_u.jsp'</script>";
                     response.getWriter().println(script);
                 }
             }
             else{
-                String script = "<script>alert('用户不存在，请重新登陆');location.href='../login.jsp'</script>";
+                session.setAttribute("alert","login_notexist");
+                String script = "<script>location.href='../login_u.jsp'</script>";
                 response.getWriter().println(script);
             }
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = response.getWriter();
-        out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-        out.println("<HTML>");
-        out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-        out.println("  <BODY>");
-        out.print("    This is ");
-        out.print(this.getClass());
-        out.println(", using the GET method");
-        out.println("  </BODY>");
-        out.println("</HTML>");
-        out.flush();
-        out.close();
     }
 }

@@ -117,6 +117,20 @@ public class AdminDao  {
         return res;
     }
 
+    public boolean deleteAdmin(String id){
+        openSession();
+
+        boolean flag=false;
+        Admin p =(Admin) s.get(Admin.class, id);
+        if(p!=null)	{
+            s.delete(p);
+            flag=true;
+        }
+
+        closeSession(flag);
+        return flag;
+    }
+
     public Admin getadminbyid(String _id) {
         openSession();
 

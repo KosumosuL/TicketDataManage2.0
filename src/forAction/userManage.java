@@ -43,8 +43,8 @@ public class userManage extends HttpServlet {
     // 添加账号时在此函数自动调用生成id函数，存入数据库成功后显示
     protected void doAdd(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("utf-8");
-        String add = request.getParameter("add");
 
+        String add = request.getParameter("add");
         if(add != null){
             UserDao user = new UserDao();
 
@@ -53,7 +53,8 @@ public class userManage extends HttpServlet {
             String id = String.valueOf(session.getAttribute("_userid_"));
             User u = user.getUserbyid(id);
             if(!u.isTadd()){
-                String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+                session.setAttribute("alert","noaccess");
+                String script = "<script>location.href='../.userManage'</script>";
                 response.getWriter().println(script);
                 return;
             }
@@ -78,11 +79,14 @@ public class userManage extends HttpServlet {
             String severity = request.getParameter("severity_add");
 
             if(user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
-                String script = "<script>alert('新增工作票成功,工作票号为：" + ticketnumber + "');location.href='../.userManage'</script>";
+                session.setAttribute("alert","success_add");
+                session.setAttribute("success_id",id);
+                String script = "<script>location.href='../.userManage'</script>";
                 response.getWriter().println(script);
             }
             else{
-                String script = "<script>alert('新增工作票失败');location.href='../.userManage'</script>";
+                session.setAttribute("alert","failure");
+                String script = "<script>location.href='../.userManage'</script>";
                 response.getWriter().println(script);
             }
         }
@@ -106,18 +110,25 @@ public class userManage extends HttpServlet {
                 String id = String.valueOf(session.getAttribute("_userid_"));
                 User u = user.getUserbyid(id);
                 if(!u.isView()){
-                    String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","noaccess");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                     return;
                 }
 
                 if(user.deleteTicket(tmp.getTicketnumber())){
-                    String script = "<script>alert('删除工作票成功');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","success");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
+                    response.getWriter().println(script);
+                    return ;
                 }
                 else{
-                    String script = "<script>alert('删除工作票失败');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","failure");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
+                    response.getWriter().println(script);
+                    return ;
                 }
             }
         }
@@ -140,7 +151,8 @@ public class userManage extends HttpServlet {
                 String id = String.valueOf(session.getAttribute("_userid_"));
                 User u = user.getUserbyid(id);
                 if(!u.isView()){
-                    String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","noaccess");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                     return;
                 }
@@ -181,12 +193,16 @@ public class userManage extends HttpServlet {
                 System.out.println(severity);
                 System.out.println(str);
                 if(user.deleteTicket(tmp.getTicketnumber()) && user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
-                    String script = "<script>alert('修改工作票成功');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","success");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
                 else{
-                    String script = "<script>alert('修改工作票失败');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","failure");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
+                    return ;
                 }
             }
         }
@@ -209,7 +225,8 @@ public class userManage extends HttpServlet {
                 String id = String.valueOf(session.getAttribute("_userid_"));
                 User u = user.getUserbyid(id);
                 if(!u.isInut()){
-                    String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","noaccess");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                     return;
                 }
@@ -301,6 +318,7 @@ public class userManage extends HttpServlet {
 //                        out = pageContext.pushBody();
                     }
                 }
+                return ;
             }
         }
     }
@@ -308,7 +326,6 @@ public class userManage extends HttpServlet {
     protected void service(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");       // note！！
 
-        System.out.println("15651");
         doAdd(request, response);
         dodelete(request, response);
         doModify(request, response);

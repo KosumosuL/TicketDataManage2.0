@@ -8,24 +8,44 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="static.bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="static.bootstrap/css/dashboard.css" >
+    <link href="toastr/toastr.min.css" rel="stylesheet">
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="toastr/toastr.min.js"></script>
     <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,                            //是否显示关闭按钮
+            "debug": false,                                 //是否使用debug模式
+            "positionClass": "toast-center-center",     //弹出窗的位置
+            "showDuration": "300",                          //显示的动画时间
+            "hideDuration": "1000",                         //消失的动画时间
+            "timeOut": "5000",                              //展现时间
+            "extendedTimeOut": "1000",                      //加长展示时间
+            "showEasing": "swing",                          //显示时的动画缓冲方式
+            "hideEasing": "linear",                         //消失时的动画缓冲方式
+            "showMethod": "fadeIn",                         //显示时的动画方式
+            "hideMethod": "fadeOut"                          //消失时的动画方式
+        };
         function showalert(alertInfo){
             var clear = false;
+            var clear_id = false;
             if(alertInfo==null){
                 alertInfo = '<%=session.getAttribute("alert")%>';
                 clear = true;
             }
             if(alertInfo!='null'){
-                var url = "alert.jsp?alert=" + alertInfo;
-                var name = "警告";
-                var iWidth = 400;
-                var iHeight = 180;
-                var iTop = (window.screen.height-30-iHeight)/2;
-                var iLeft = (window.screen.width-10-iWidth)/2;
-                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-                if(clear){
-                    <%session.removeAttribute("alert");%>
+                if(alertInfo=="login_success"){ toastr.success("登录成功！");}
+                else if(alertInfo=="name_invalid"){ toastr.error("用户名无效，请重新填写！");}
+                else if(alertInfo=="pwd_invalid"){ toastr.error("密码无效，请重新填写！");}
+                else if(alertInfo=="id_num_invalid"){ toastr.error("身份证号和出生地、出生日期不匹配，请重新填写！");}
+                else if(alertInfo=="tel_invalid"){ toastr.error("手机号码无效，请重新填写！");}
+                else if(alertInfo=="success_add"){
+                    toastr.success("新增用户成功！新增用户的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
+                    clear_id = true;
                 }
+                else if(alertInfo=="success"){ toastr.success("操作成功！");}
+                else { toastr.error('操作失败！');}
+                if(clear){ <%session.removeAttribute("alert");%>}
+                if(clear_id){ <%session.removeAttribute("success_id");%>}
             }
         }
     </script>
@@ -118,7 +138,7 @@
                         }
                         function displayCheck () {
                             if(!isNumber(formDisplay.usersPerPage.value) || formDisplay.usersPerPage.value < 1) {
-                                showalert("每页显示的用户数必须为正整数");
+                                toastr.warning("每页显示的用户数必须为正整数");
                                 return false;
                             }
                             return true;
@@ -169,7 +189,7 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 85px;text-align: center;">密码</span>
-                                                    <input type="password" class="form-control" name="pwd_add" placeholder="长度8-16,数字和字母,至少2位数字" style="width: 250px;">
+                                                    <input type="password" class="form-control" name="pwd_add" placeholder="长度8-16,数字和字母" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -320,7 +340,7 @@
                                             userAdd.baddr_add.value = userAdd.baddr_add_hidden.value;
                                             userAdd.bdate_add.value = userAdd.bdate_add_hidden.value;
                                             if(userAdd.name_add.value=="" || userAdd.pwd_add.value=="" || userAdd.baddr_add.value=="" || userAdd.bdate_add.value=="" || userAdd.id_num_add.value=="" || userAdd.tel_add.value=="") {
-                                                showalert("信息填写不完整");
+                                                toastr.warning("信息填写不完整");
                                                 return false;
                                             }
                                             return true;
@@ -578,7 +598,7 @@
                                                         userMod.baddr_${user.id}.value = userMod.baddr_${user.id}_hidden.value;
                                                         userMod.bdate_${user.id}.value = userMod.bdate_${user.id}_hidden.value;
                                                         if(userMod.name_${user.id}.value=="" || userMod.bdate_${user.id}.value=="" || userMod.id_num_${user.id}.value=="" || userMod.tel_${user.id}.value=="") {
-                                                            showalert("信息填写不完整");
+                                                            toastr.warning("信息填写不完整");
                                                             return false;
                                                         }
                                                         setId_${user.id}();
@@ -590,7 +610,6 @@
                                                 </script>
                                                 <input type="submit" name="modify_${user.id}" value="修改" onclick="return userCheck_${user.id}();" class="btn btn-success">
                                                 <input type="submit" name="delete_${user.id}" value="删除" onclick="setId_${user.id}();" class="btn btn-danger">
-                                                <%--<a href="forget.jsp"><button type="button" class="btn btn-warning">修改密码</button></a>--%>
                                                 <button type="button" data-dismiss="modal" class="btn btn-default">关闭</button>
                                             </div>
                                         </div>

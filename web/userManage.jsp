@@ -8,33 +8,50 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="static.bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="static.bootstrap/css/dashboard.css" >
+    <link href="toastr/toastr.min.css" rel="stylesheet">
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="toastr/toastr.min.js"></script>
     <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,                            //是否显示关闭按钮
+            "debug": false,                                 //是否使用debug模式
+            "positionClass": "toast-center-center",     //弹出窗的位置
+            "showDuration": "300",                          //显示的动画时间
+            "hideDuration": "1000",                         //消失的动画时间
+            "timeOut": "5000",                              //展现时间
+            "extendedTimeOut": "1000",                      //加长展示时间
+            "showEasing": "swing",                          //显示时的动画缓冲方式
+            "hideEasing": "linear",                         //消失时的动画缓冲方式
+            "showMethod": "fadeIn",                         //显示时的动画方式
+            "hideMethod": "fadeOut"                          //消失时的动画方式
+        };
         function showalert(alertInfo){
             var clear = false;
+            var clear_id = false;
             if(alertInfo==null){
                 alertInfo = '<%=session.getAttribute("alert")%>';
                 clear = true;
             }
             if(alertInfo!='null'){
-                var url = "alert.jsp?alert=" + alertInfo;
-                var name = "警告";
-                var iWidth = 400;
-                var iHeight = 180;
-                var iTop = (window.screen.height-30-iHeight)/2;
-                var iLeft = (window.screen.width-10-iWidth)/2;
-                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-                if(clear){
-                    <%session.removeAttribute("alert");%>
+                if(alertInfo=="login_success"){ toastr.success("登录成功！");}
+                else if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
+                else if(alertInfo=="success_add"){
+                    toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
+                    clear_id = true;
                 }
+                else if(alertInfo=="success"){ toastr.success("操作成功！");}
+                else { toastr.error('操作失败！');}
+                if(clear){ <%session.removeAttribute("alert");%>}
+                if(clear_id){ <%session.removeAttribute("success_id");%>}
             }
         }
     </script>
 </head>
 <body onload="showalert(null)">
-<c:set var="alert" value="${sessionScope.alert}"/>
-<c:if test="${alert!=null}">
-    <%request.getSession().removeAttribute("alert");%>
-</c:if>
+<%--<c:set var="alert" value="${sessionScope.alert}"/>--%>
+<%--<c:if test="${alert!=null}">--%>
+    <%--<%request.getSession().removeAttribute("alert");%>--%>
+<%--</c:if>--%>
 <c:set var="ticketsPerPage" value="${sessionScope.ticketsPerPage}"/>
 <c:set var="ipccustomer_display" value="${sessionScope.ipccustomer_display}"/>
 <c:set var="customercode_display" value="${sessionScope.customercode_display}"/>
@@ -166,7 +183,7 @@
                         }
                         function displayCheck () {
                             if(!isNumber(formDisplay.ticketsPerPage.value) || formDisplay.ticketsPerPage.value < 1) {
-                                showalert("每页显示的工作票数必须为正整数");
+                                toastr.warning("每页显示的工作票数必须为正整数");
                                 return false;
                             }
                             return true;
@@ -403,7 +420,7 @@
                                     <script language="javascript">
                                         function ticketCheck_add(){
                                             if(ticketAdd.ipccustomer_add.value=="" || ticketAdd.customercode_add.value=="" || ticketAdd.cause_add.value=="" || ticketAdd.summary_add.value=="" || ticketAdd.componenttype_add.value=="" || ticketAdd.ostype_add.value=="" || ticketAdd.identifier_add.value=="" || ticketAdd.ticketstatus_add.value=="" || ticketAdd.lastoccurrence_add.value=="" || ticketAdd.node_add.value=="" || ticketAdd.resolution_add.value=="" || ticketAdd.servername_add.value=="" || ticketAdd.alertgroup_add.value=="" || ticketAdd.component_add.value=="" || ticketAdd.firstoccurrence_add.value=="" || ticketAdd.severity_add.value=="") {
-                                                showalert("信息填写不完整");
+                                                toastr.warning("信息填写不完整");
                                                 return false;
                                             }
                                             return true;
@@ -441,7 +458,7 @@
                 </form>
                 <a href=".servletticketMultiOutput"><button type="button" class="btn btn-sm btn-info">导出</button></a>
             </h4>
-            <form name="ticketMod" class="form-group" action="/.userManage" method="post">
+            <form name="ticketMod" class="form-group" action="forAction/.servletuserManage" method="post">
                 <%--_ticketnumber_隐藏输入值，直接传递ticketnumber--%>
                 <input type="hidden" name="_ticketnumber_" value="">
                 <table class="table table-hover table-responsive table-striped table-bordered">
@@ -707,7 +724,7 @@
                                                 <script language="javascript">
                                                     function ticketCheck_${ticket.ticketnumber}(){
                                                         if(ticketMod.ipccustomer_${ticket.ticketnumber}.value=="" || ticketMod.customercode_${ticket.ticketnumber}.value=="" || ticketMod.cause_${ticket.ticketnumber}.value=="" || ticketMod.summary_${ticket.ticketnumber}.value=="" || ticketMod.componenttype_${ticket.ticketnumber}.value=="" || ticketMod.ostype_${ticket.ticketnumber}.value=="" || ticketMod.identifier_${ticket.ticketnumber}.value=="" || ticketMod.ticketstatus_${ticket.ticketnumber}.value=="" || ticketMod.lastoccurrence_${ticket.ticketnumber}.value=="" || ticketMod.node_${ticket.ticketnumber}.value=="" || ticketMod.resolution_${ticket.ticketnumber}.value=="" || ticketMod.servername_${ticket.ticketnumber}.value=="" || ticketMod.alertgroup_${ticket.ticketnumber}.value=="" || ticketMod.component_${ticket.ticketnumber}.value=="" || ticketMod.firstoccurrence_${ticket.ticketnumber}.value=="" || ticketMod.severity_${ticket.ticketnumber}.value=="") {
-                                                            showalert("信息填写不完整");
+                                                            toastr.warning("信息填写不完整");
                                                             return false;
                                                         }
                                                         setTicketnumber_${ticket.ticketnumber}();

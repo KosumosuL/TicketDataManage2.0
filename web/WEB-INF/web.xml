@@ -99,7 +99,15 @@
         <servlet-name>resetPwd</servlet-name>
         <url-pattern>*.resetPwd</url-pattern>
     </servlet-mapping>
-
+    <!--个人信息界面-->
+    <servlet>
+        <servlet-name>infoModify</servlet-name>
+        <servlet-class>forAction.infoModify</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>infoModify</servlet-name>
+        <url-pattern>*.infoModify</url-pattern>
+    </servlet-mapping>
     <!--testChart-->
     <servlet>
         <servlet-name>testchart</servlet-name>

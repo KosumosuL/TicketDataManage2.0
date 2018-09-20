@@ -9,10 +9,41 @@
     <meta name="description" content="">
     <meta name="author" content="2-6">
     <link rel="icon" href="icon/ticket.ico">
+    <link href="static.bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static.bootstrap/css/signin.css" rel="stylesheet">
+    <link href="static.bootstrap/css/carousel.css" rel="stylesheet">
     <title>柱状图</title>
     <script src="ECharts/echarts.js"></script>
 </head>
 <body>
+
+<div class="navbar-wrapper">
+    <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="">工作票数据管理系统</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="statistics.jsp">返回</a></li>
+                        <li><a href="logout.jsp">退出</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+</div>
+<br>
+<br>
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
 <div id="main" style="width: 100%;height: 100%;"></div>
 <c:set var="obj" value="${requestScope.obj}"/>
@@ -121,5 +152,9 @@
     });
     myChart.setOption(option);
 </script>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<script src="static.bootstrap/js/jquery-3.3.1.min.js"></script>
+<script src="static.bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
