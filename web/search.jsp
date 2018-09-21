@@ -6,6 +6,9 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="static.bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="static.bootstrap/css/dashboard.css" >
+    <link href="toastr/toastr.min.css" rel="stylesheet">
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="toastr/toastr.min.js"></script>
     <style type="text/css">
         body{
             background-image: url(bkimg/13.jpg);
@@ -13,24 +16,37 @@
         }
     </style>
     <script type="text/javascript">
-        var row = 1;
+        toastr.options = {
+            "closeButton": true,                            //是否显示关闭按钮
+            "debug": false,                                 //是否使用debug模式
+            "positionClass": "toast-center-center",     //弹出窗的位置
+            "showDuration": "300",                          //显示的动画时间
+            "hideDuration": "1000",                         //消失的动画时间
+            "timeOut": "5000",                              //展现时间
+            "extendedTimeOut": "1000",                      //加长展示时间
+            "showEasing": "swing",                          //显示时的动画缓冲方式
+            "hideEasing": "linear",                         //消失时的动画缓冲方式
+            "showMethod": "fadeIn",                         //显示时的动画方式
+            "hideMethod": "fadeOut"                          //消失时的动画方式
+        };
         function showalert(alertInfo){
             var clear = false;
+            var clear_id = false;
             if(alertInfo==null){
                 alertInfo = '<%=session.getAttribute("alert")%>';
                 clear = true;
             }
             if(alertInfo!='null'){
-                var url = "alert.jsp?alert=" + alertInfo;
-                var name = "警告";
-                var iWidth = 400;
-                var iHeight = 180;
-                var iTop = (window.screen.height-30-iHeight)/2;
-                var iLeft = (window.screen.width-10-iWidth)/2;
-                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-                if(clear){
-                    <%session.removeAttribute("alert");%>
+                if(alertInfo=="login_success"){ toastr.success("登录成功！");}
+                else if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
+                else if(alertInfo=="success_add"){
+                    toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
+                    clear_id = true;
                 }
+                else if(alertInfo=="success"){ toastr.success("操作成功！");}
+                else { toastr.error('操作失败！');}
+                if(clear){ <%session.removeAttribute("alert");%>}
+                if(clear_id){ <%session.removeAttribute("success_id");%>}
             }
         }
     </script>
@@ -52,23 +68,9 @@
                     <a class="navbar-brand" href="">工作票数据管理系统</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="index.jsp">总览</a></li>
-                        <li class="active"><a href="">登录</a></li>
-                        <li><a href="register.jsp">注册</a></li>
-                        <li class="dropdown">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-header">用户</li>
-                                <li><a href=".adminManage">总览</a></li>
-                                <li><a href="forget.jsp">修改密码</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">工作票</li>
-                                <li><a href=".userManage">总览</a></li>
-                                <li class="active"><a href="">查询</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="personal.jsp">个人信息</a></li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../.userManage">返回</a></li>
+                        <li><a href="logout.jsp">退出</a></li>
                     </ul>
                 </div>
             </div>
@@ -80,7 +82,7 @@
 
 <div class="container">
 
-    <form class="form-data" action="" method="post" style="text-align: center;" name="data">
+    <form class="form-data" action="/.userManage" method="post" style="text-align: center;" name="data">
         <h2 class="form-signin-heading">查询</h2>
         <br>
         <br>
@@ -89,7 +91,7 @@
             <script type="text/javascript">
                 function addTableRow() {
                     if(row == 5){
-                        alert("最多只能有五个条件");
+                        toast.warning("最多只能有五个条件");
                         return;
                     }
                     row += 1;
@@ -98,7 +100,7 @@
                         "_hidden\"><option value=\"and\" selected>并且</option><option value=\"or\">或者</option><option value=\"not\">不含</option></select><input type=\"hidden\" name=\"relation_" + row.toString() +
                         "\"></td>" +
                         "<td><div class=\"input-group\"><span class=\"input-group-addon\"><select class=\"selectpicker\" name=\"attr_" + row.toString() +
-                        "_hidden\" style=\"width: 120px;\"><option value=\"whatever\" selected>任意字段</option><option value=\"ticketnumber\">ID</option><option value=\"ipccustomer\">用户全称</option><option value=\"customercode\">用户代码</option><option value=\"cause\">原因</option><option value=\"summary\">问题描述</option><option value=\"componenttype\">组件类型</option><option value=\"ostype\">OS类型</option><option value=\"identifier\">标识符</option><option value=\"ticketstatus\">状态</option><option value=\"lastoccurrence\">闭合时间</option><option value=\"node\">节点ID</option><option value=\"resolution\">解决方案</option><option value=\"servername\">服务器名称</option><option value=\"alertgroup\">告警组</option><option value=\"component\">组件</option><option value=\"firstoccurrence\">产生时间</option><option value=\"severity\">问题严重程度</option></select><input type=\"hidden\" name=\"attr_" + row.toString() +
+                        "_hidden\" style=\"width: 120px;\"><option value=\"whatever\" selected>请选择字段</option><option value=\"ticketnumber\">ID</option><option value=\"ipccustomer\">用户全称</option><option value=\"customercode\">用户代码</option><option value=\"cause\">原因</option><option value=\"summary\">问题描述</option><option value=\"componenttype\">组件类型</option><option value=\"ostype\">OS类型</option><option value=\"identifier\">标识符</option><option value=\"ticketstatus\">状态</option><option value=\"lastoccurrence\">闭合时间</option><option value=\"node\">节点ID</option><option value=\"resolution\">解决方案</option><option value=\"servername\">服务器名称</option><option value=\"alertgroup\">告警组</option><option value=\"component\">组件</option><option value=\"firstoccurrence\">产生时间</option><option value=\"severity\">问题严重程度</option></select><input type=\"hidden\" name=\"attr_" + row.toString() +
                         "\"></span><input type=\"text\" class=\"form-control\" placeholder=\"300个字符以内\" name=\"search_" + row.toString() +
                         "\" style=\"width: 500px;\"></div></td>" +
                         "</tr><tr><td>" + "<input type=\"checkbox\" name=\"check" + row.toString() + "\" checked style=\"display: none\"/></td><td><div class=\"row\">&nbsp</div></td></tr>" +
@@ -127,7 +129,7 @@
                     <div class="input-group">
                         <span class="input-group-addon">
                         <select class="selectpicker" name="attr_1_hidden" style="width: 120px;">
-                            <option value="whatever" selected>任意字段</option>
+                            <option value="whatever" selected>请选择字段</option>
                             <option value="ticketnumber">ID</option>
                             <option value="ipccustomer">用户全称</option>
                             <option value="customercode">用户代码</option>
@@ -193,27 +195,47 @@
                     }
                     data.row.value = row;
                     data.attr_1.value = data.attr_1_hidden.value;
+                    if(data.attr_1.value == "whatever"){
+                        toast.warning("请选择字段");
+                        return false;
+                    }
                     if(row >= 2){
                         data.attr_2.value = data.attr_2_hidden.value;
                         data.relation_2.value = data.relation_2_hidden.value;
+                        if(data.attr_2.value == "whatever"){
+                            toast.warning("请选择字段");
+                            return false;
+                        }
                     }
                     if(row >= 3){
                         data.attr_3.value = data.attr_3_hidden.value;
                         data.relation_3.value = data.relation_3_hidden.value;
+                        if(data.attr_3.value == "whatever"){
+                            toast.warning("请选择字段");
+                            return false;
+                        }
                     }
                     if(row >= 4){
                         data.attr_4.value = data.attr_4_hidden.value;
                         data.relation_4.value = data.relation_4_hidden.value;
+                        if(data.attr_4.value == "whatever"){
+                            toast.warning("请选择字段");
+                            return false;
+                        }
                     }
                     if(row >= 5){
                         data.attr_5.value = data.attr_5_hidden.value;
                         data.relation_5.value = data.relation_5_hidden.value;
+                        if(data.attr_5.value == "whatever"){
+                            toast.warning("请选择字段");
+                            return false;
+                        }
                     }
                     data.chart.value = data.chart_hidden.value;
                     return true;
                 }
             </script>
-            <button class="btn btn-lg btn-primary btn-block" type="submit" name="btn-data" onclick="return check();">查询</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="complex_search" onclick="return check();">查询</button>
         </div>
     </form>
 </div>

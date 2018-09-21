@@ -37,7 +37,8 @@ public class filterStatis extends HttpServlet {
         UserDao user = new UserDao();
         User u = user.getUserbyid(id);
         if (!u.isStatis()) {
-            String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+            session.setAttribute("alert","noaccess");
+            String script = "<script>location.href='../.userManage'</script>";
             resp.getWriter().println(script);
             return;
         }

@@ -2,16 +2,18 @@ package forDao;
 
 import forXml.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
+import org.hibernate.Criteria;
+import org.hibernate.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
+
 public class UserDao {
 
     private SessionFactory sf;
@@ -290,23 +292,63 @@ public class UserDao {
 
 
     // for searching
+//    public List<Ticket> searchTicket(Map<String, String> params) {
+//        openSession();
+//
+//        String str = "from Ticket where";
+//        for(String key : params.keySet()){
+//            str += " " + key + "=:" + key + " and";
+//        }
+//        str = str.substring(0, str.length()-4);
+//        Query query=s.createQuery(str);
+//        for(String key : params.keySet()){
+//            query.setParameter(key, params.get(key));
+//        }
+//
+//        List<Ticket> list=query.list();
+//        closeSession(false);
+//
+//        return list;
+//    }
+
     public List<Ticket> searchTicket(Map<String, String> params) {
         openSession();
 
-        String str = "from Ticket where";
-        for(String key : params.keySet()){
-            str += " " + key + "=:" + key + " and";
-        }
-        str = str.substring(0, str.length()-4);
-        Query query=s.createQuery(str);
-        for(String key : params.keySet()){
-            query.setParameter(key, params.get(key));
-        }
+        Criteria cr = s.createCriteria(Ticket.class);
+        cr.add(Restrictions.allEq(params));
+        List<Ticket> result = cr.list();
 
-        List<Ticket> list=query.list();
         closeSession(false);
 
-        return list;
+        return result;
+    }
+
+    public List<Ticket> complex_searchTicket(Map<String, String> params, List<String> relat) {
+        openSession();
+
+        Criteria cr = s.createCriteria(Ticket.class);
+
+        List<SimpleExpression> se = new ArrayList<>();
+        for(String key : params.keySet()){
+            SimpleExpression tmp = Restrictions.eq(key, params.get(key));
+            se.add(tmp);
+        }
+
+        if(relat.size()==0){
+            cr.add(se.get(0));
+        }
+        else{
+            LogicalExpression le;
+            le = relat.get(0).equals("and") ? Restrictions.and(se.get(0), se.get(1)) : Restrictions.or(se.get(0), se.get(1));
+            for (int i = 1; i < relat.size(); i++) {
+                le = relat.get(i).equals("and") ? Restrictions.and(le, se.get(i + 1)) : Restrictions.or(le, se.get(i + 1));
+            }
+            cr.add(le);
+        }
+        List<Ticket> result = cr.list();
+        closeSession(false);
+
+        return result;
     }
 
     // for statistic

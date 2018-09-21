@@ -101,11 +101,94 @@ public class pageUser extends HttpServlet {
             }
             else{
 //                若没有url变量，则必为初始化或者其他servlet跳转
-                /*  test
-                testPage pg = new testPage();
-                tickets = pg.listAllTickets();*/
-                UserDao user = new UserDao();
-                tickets = user.getallTicket();
+//                1. 简单搜索：修改tickets
+                if(req.getParameter("easy_search")!=null){
+                    // access
+                    String id = String.valueOf(session.getAttribute("_userid_"));
+                    UserDao user = new UserDao();
+                    User u = user.getUserbyid(id);
+                    if (!u.isSear()) {
+                        session.setAttribute("alert","noaccess");
+                        String script = "<script>location.href='../.userManage'</script>";
+                        resp.getWriter().println(script);
+                        return;
+                    }
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    if(!req.getParameter("ticketnumber_search").equals(""))  params.put("ticketnumber", req.getParameter("ticketnumber_search"));
+                    if(!req.getParameter("ipccustomer_search").equals(""))  params.put("ipccustomer", req.getParameter("ipccustomer_search"));
+                    if(!req.getParameter("customercode_search").equals(""))  params.put("customercode", req.getParameter("customercode_search"));
+                    if(!req.getParameter("cause_search").equals(""))  params.put("cause", req.getParameter("cause_search"));
+                    if(!req.getParameter("summary_search").equals(""))  params.put("summary", req.getParameter("summary_search"));
+                    if(!req.getParameter("componenttype_search").equals(""))  params.put("componenttype", req.getParameter("componenttype_search"));
+                    if(!req.getParameter("ostype_search").equals(""))  params.put("ostype", req.getParameter("ostype_search"));
+                    if(!req.getParameter("identifier_search").equals(""))  params.put("identifier", req.getParameter("identifier_search"));
+                    if(!req.getParameter("ticketstatus_search").equals(""))  params.put("ticketstatus", req.getParameter("ticketstatus_search"));
+                    if(!req.getParameter("lastoccurrence_search").equals(""))  params.put("lastoccurrence", req.getParameter("lastoccurrence_search"));
+                    if(!req.getParameter("node_search").equals(""))  params.put("node", req.getParameter("node_search"));
+                    if(!req.getParameter("resolution_search").equals(""))  params.put("resolution", req.getParameter("resolution_search"));
+                    if(!req.getParameter("servername_search").equals(""))  params.put("servername", req.getParameter("servername_search"));
+                    if(!req.getParameter("alertgroup_search").equals(""))  params.put("alertgroup", req.getParameter("alertgroup_search"));
+                    if(!req.getParameter("component_search").equals(""))  params.put("component", req.getParameter("component_search"));
+                    if(!req.getParameter("firstoccurrence_search").equals(""))  params.put("firstoccurrence", req.getParameter("firstoccurrence_search"));
+                    if(!req.getParameter("severity_search").equals(""))  params.put("severity", req.getParameter("severity_search"));
+
+                    for(String key:params.keySet()){
+                        System.out.println(key+"   "+params.get(key));
+                    }
+                    tickets = user.searchTicket(params);
+                }
+//                2. 高级搜索
+                else if(req.getParameter("complex_search")!=null){
+                    // access
+                    String id = String.valueOf(session.getAttribute("_userid_"));
+                    UserDao user = new UserDao();
+                    User u = user.getUserbyid(id);
+                    if (!u.isSear()) {
+                        session.setAttribute("alert","noaccess");
+                        String script = "<script>location.href='../.userManage'</script>";
+                        resp.getWriter().println(script);
+                        return;
+                    }
+
+                    int row;
+                    String r = req.getParameter("row");
+                    try {
+                        row = Integer.valueOf(r);
+                    } catch (NumberFormatException e) {
+                        row = 1;
+                    }
+                    Map<String, String> params = new HashMap<String, String>();
+                    List<String> relat = new ArrayList<>();
+                    String attr_1 = req.getParameter("attr_1");
+                    String search_1 = req.getParameter("search_1");
+                    params.put(attr_1, search_1);
+                    for(int i=2;i<=row;i++){
+                        String relation = req.getParameter("relation_" + String.valueOf(i));
+                        relat.add(relation);
+                        String attr = req.getParameter("attr_" + String.valueOf(i));
+                        String search = req.getParameter("search_" + String.valueOf(i));
+                        params.put(attr, search);
+                    }
+
+                    for(String key:params.keySet()){
+                        System.out.println(key+"   "+params.get(key));
+                    }
+                    for(String key:relat){
+                        System.out.println(key);
+                    }
+
+                    tickets = user.complex_searchTicket(params, relat);
+                }
+//                3. 一般情况
+                else {
+                    /*  test
+                    testPage pg = new testPage();
+                    tickets = pg.listAllTickets();*/
+                    UserDao user = new UserDao();
+                    tickets = user.getallTicket();
+                }
+
                 session.setAttribute("tickets", tickets);
                 try {
 //                    若session中有ticketsPerPage，则为其他servlet跳转
@@ -113,19 +196,19 @@ public class pageUser extends HttpServlet {
                 } catch (Exception e) {
 //                    若session中没有ticketsPerPage，则为初始化
                     ticketsPerPage = 10;
-                    /*  test
-                    session.setAttribute("_userid_", "007");
-                    session.setAttribute("_username_", "James Bond");
-                    session.setAttribute("_userpwd_", "007");
-                    session.setAttribute("_userbaddr_", "国外");
-                    session.setAttribute("_userbdate_", "1962-10-5");
-                    session.setAttribute("_userid_num_", "007");
-                    session.setAttribute("_usertel_", "007");
-                    session.setAttribute("_userview_", true);
-                    session.setAttribute("_usersear_", true);
-                    session.setAttribute("_usertadd_", true);
-                    session.setAttribute("_userstatis_", true);
-                    session.setAttribute("_userinut_", true);*/
+                /*  test
+                session.setAttribute("_userid_", "007");
+                session.setAttribute("_username_", "James Bond");
+                session.setAttribute("_userpwd_", "007");
+                session.setAttribute("_userbaddr_", "国外");
+                session.setAttribute("_userbdate_", "1962-10-5");
+                session.setAttribute("_userid_num_", "007");
+                session.setAttribute("_usertel_", "007");
+                session.setAttribute("_userview_", true);
+                session.setAttribute("_usersear_", true);
+                session.setAttribute("_usertadd_", true);
+                session.setAttribute("_userstatis_", true);
+                session.setAttribute("_userinut_", true);*/
 //                    default setting
                     session.setAttribute("cause_display", true);
                     session.setAttribute("customercode_display", true);

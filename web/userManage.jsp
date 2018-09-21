@@ -435,6 +435,241 @@
                         <!-- /.modal-dialog -->
                     </div>
                 </form>
+                <form name="ticketSearch" action="/.userManage" method="post" style="display: inline;">
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#ticket_search">查询</button>
+                    <div class="modal fade" id="ticket_search" tabindex="-1" role="dialog" aria-labelledby="ticket_search_label" aria-hidden="true">
+                        <div class="modal-dialog" style="width: 1000px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button data-dismiss="modal" class="close" type="button">
+                                        <span aria-hidden="true">×</span>
+                                        <span class="sr-only">Close</span>
+                                    </button>
+                                    <h4 class="modal-title" id="ticket_search_label">查询工作票</h4>
+                                </div>
+                                <div class="modal-body" align="center">
+                                    <table style="font-size:18px">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">ID</span>
+                                                    <input type="text" class="form-control" name="ticketnumber_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">用户全称</span>
+                                                    <input type="text" class="form-control" name="ipccustomer_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">用户代码</span>
+                                                    <input type="text" class="form-control" name="customercode_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">原因</span>
+                                                    <input type="text" class="form-control" name="cause_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">问题描述</span>
+                                                    <input type="text" class="form-control" name="summary_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">组件类型</span>
+                                                    <input type="text" class="form-control" name="componenttype_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">OS类型</span>
+                                                    <input type="text" class="form-control" name="ostype_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">标识符</span>
+                                                    <input type="text" class="form-control" name="identifier_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">状态</span>
+                                                    <input type="text" class="form-control" name="ticketstatus_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">闭合时间</span>
+                                                    <input type="text" class="form-control" name="lastoccurrence_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">节点ID</span>
+                                                    <input type="text" class="form-control" name="node_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">解决方案</span>
+                                                    <input type="text" class="form-control" name="resolution_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">服务器名称</span>
+                                                    <input type="text" class="form-control" name="servername_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">告警组</span>
+                                                    <input type="text" class="form-control" name="alertgroup_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">组件</span>
+                                                    <input type="text" class="form-control" name="component_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">产生时间</span>
+                                                    <input type="text" class="form-control" name="firstoccurrence_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="row">&nbsp</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon" style="width: 110px;text-align: center;">问题严重程度</span>
+                                                    <input type="text" class="form-control" name="severity_search" placeholder="300个字符以内" style="width: 250px;">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <script language="javascript">
+                                        function ticketCheck_search(){
+                                            if(ticketSearch.ipccustomer_search.value=="" && ticketSearch.customercode_search.value=="" && ticketSearch.cause_search.value=="" && ticketSearch.summary_search.value=="" && ticketSearch.componenttype_search.value=="" && ticketSearch.ostype_search.value=="" && ticketSearch.identifier_search.value=="" && ticketSearch.ticketstatus_search.value=="" && ticketSearch.lastoccurrence_search.value=="" && ticketSearch.node_search.value=="" && ticketSearch.resolution_search.value=="" && ticketSearch.servername_search.value=="" && ticketSearch.alertgroup_search.value=="" && ticketSearch.component_search.value=="" && ticketSearch.firstoccurrence_search.value=="" && ticketSearch.severity_search.value=="") {
+                                                toast.warning("请至少输入一个查询条件");
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    </script>
+                                    <input type="submit" name="easy_search" value="查询" onclick="return ticketCheck_search();" class="btn btn-success">
+                                    <button type="button" data-dismiss="modal" class="btn btn-default">关闭</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                </form>
                 <form name="ticketInput" action="" method="post" enctype="multipart/form-data" style="display: inline;">
                     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#ticketInput">导入</button>
                     <div class="modal fade" id="ticketInput" tabindex="-1" role="dialog" aria-labelledby="ticketInput_label" aria-hidden="true">
