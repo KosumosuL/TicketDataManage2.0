@@ -331,7 +331,7 @@
                         personal.bdate.value = personal.bdate_hidden.value;
                         function check(){
                             if(personal.name.value=="" || personal.bdate.value=="" || personal.id_num.value=="" || personal.tel.value=="") {
-                                toast.warning("信息填写不完整");
+                                toastr.warning("信息填写不完整");
                                 return false;
                             }
                             return true;

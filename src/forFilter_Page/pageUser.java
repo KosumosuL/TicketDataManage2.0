@@ -37,7 +37,10 @@ public class pageUser extends HttpServlet {
             return;
         }
 
-
+        //test
+        System.out.println("slkfdhslkdfs");
+        System.out.println(req.getParameter("complex_search"));
+        System.out.println(req.getParameter("row"));
         List<Ticket> tickets;
         boolean isPage = true, isticketsPerPage = true;
         int page, ticketsPerPage;
@@ -63,41 +66,88 @@ public class pageUser extends HttpServlet {
                 isticketsPerPage = false;
             }
             if(isticketsPerPage){
-                tickets = (List<Ticket>)session.getAttribute("tickets");
-                boolean ticketnumber_display = req.getParameter("ticketnumber_display") != null;
-                boolean ipccustomer_display = req.getParameter("ipccustomer_display") != null;
-                boolean customercode_display = req.getParameter("customercode_display") != null;
-                boolean cause_display = req.getParameter("cause_display") != null;
-                boolean summary_display = req.getParameter("summary_display") != null;
-                boolean componenttype_display = req.getParameter("componenttype_display") != null;
-                boolean ostype_display = req.getParameter("ostype_display") != null;
-                boolean identifier_display = req.getParameter("identifier_display") != null;
-                boolean ticketstatus_display = req.getParameter("ticketstatus_display") != null;
-                boolean lastoccurrence_display = req.getParameter("lastoccurrence_display") != null;
-                boolean node_display = req.getParameter("node_display") != null;
-                boolean resolution_display = req.getParameter("resolution_display") != null;
-                boolean servername_display = req.getParameter("servername_display") != null;
-                boolean alertgroup_display = req.getParameter("alertgroup_display") != null;
-                boolean component_display = req.getParameter("component_display") != null;
-                boolean firstoccurrence_display = req.getParameter("firstoccurrence_display") != null;
-                boolean severity_display = req.getParameter("severity_display") != null;
-                session.setAttribute("ipccustomer_display", ipccustomer_display);
-                session.setAttribute("customercode_display", customercode_display);
-                session.setAttribute("cause_display", cause_display);
-                session.setAttribute("summary_display", summary_display);
-                session.setAttribute("componenttype_display", componenttype_display);
-                session.setAttribute("ostype_display", ostype_display);
-                session.setAttribute("identifier_display", identifier_display);
-                session.setAttribute("ticketstatus_display", ticketstatus_display);
-                session.setAttribute("lastoccurrence_display", lastoccurrence_display);
-                session.setAttribute("node_display", node_display);
-                session.setAttribute("resolution_display", resolution_display);
-                session.setAttribute("servername_display", servername_display);
-                session.setAttribute("alertgroup_display", alertgroup_display);
-                session.setAttribute("component_display", component_display);
-                session.setAttribute("firstoccurrence_display", firstoccurrence_display);
-                session.setAttribute("severity_display", severity_display);
-                session.setAttribute("ticketsPerPage", ticketsPerPage);
+                //                2. 高级搜索
+                if(req.getParameter("complex_search")!=null){
+                    // access
+                    System.out.println("fldskhdfsadlksjfhdlksfdlskjhfkjdsdf");
+                    String id = String.valueOf(session.getAttribute("_userid_"));
+                    UserDao user = new UserDao();
+                    User u = user.getUserbyid(id);
+                    if (!u.isSear()) {
+                        session.setAttribute("alert","noaccess");
+                        String script = "<script>location.href='../.userManage'</script>";
+                        resp.getWriter().println(script);
+                        return;
+                    }
+
+                    int row;
+                    String r = req.getParameter("row");
+                    System.out.println(r);
+                    try {
+                        row = Integer.valueOf(r);
+                    } catch (NumberFormatException e) {
+                        row = 1;
+                    }
+                    Map<String, String> params = new HashMap<String, String>();
+                    List<String> relat = new ArrayList<>();
+                    String attr_1 = req.getParameter("attr_1");
+                    String search_1 = req.getParameter("search_1");
+                    System.out.println(attr_1);System.out.println(search_1);
+                    params.put(attr_1, search_1);
+                    for(int i=2;i<=row;i++){
+                        String relation = req.getParameter("relation_" + String.valueOf(i));
+                        relat.add(relation);
+                        String attr = req.getParameter("attr_" + String.valueOf(i));
+                        String search = req.getParameter("search_" + String.valueOf(i));
+                        params.put(attr, search);
+                    }
+
+                    for(String key:params.keySet()){
+                        System.out.println(key+"   "+params.get(key));
+                    }
+                    for(String key:relat){
+                        System.out.println(key);
+                    }
+
+                    tickets = user.complex_searchTicket(params, relat);
+                }
+                else{
+                    tickets = (List<Ticket>)session.getAttribute("tickets");
+                    boolean ticketnumber_display = req.getParameter("ticketnumber_display") != null;
+                    boolean ipccustomer_display = req.getParameter("ipccustomer_display") != null;
+                    boolean customercode_display = req.getParameter("customercode_display") != null;
+                    boolean cause_display = req.getParameter("cause_display") != null;
+                    boolean summary_display = req.getParameter("summary_display") != null;
+                    boolean componenttype_display = req.getParameter("componenttype_display") != null;
+                    boolean ostype_display = req.getParameter("ostype_display") != null;
+                    boolean identifier_display = req.getParameter("identifier_display") != null;
+                    boolean ticketstatus_display = req.getParameter("ticketstatus_display") != null;
+                    boolean lastoccurrence_display = req.getParameter("lastoccurrence_display") != null;
+                    boolean node_display = req.getParameter("node_display") != null;
+                    boolean resolution_display = req.getParameter("resolution_display") != null;
+                    boolean servername_display = req.getParameter("servername_display") != null;
+                    boolean alertgroup_display = req.getParameter("alertgroup_display") != null;
+                    boolean component_display = req.getParameter("component_display") != null;
+                    boolean firstoccurrence_display = req.getParameter("firstoccurrence_display") != null;
+                    boolean severity_display = req.getParameter("severity_display") != null;
+                    session.setAttribute("ipccustomer_display", ipccustomer_display);
+                    session.setAttribute("customercode_display", customercode_display);
+                    session.setAttribute("cause_display", cause_display);
+                    session.setAttribute("summary_display", summary_display);
+                    session.setAttribute("componenttype_display", componenttype_display);
+                    session.setAttribute("ostype_display", ostype_display);
+                    session.setAttribute("identifier_display", identifier_display);
+                    session.setAttribute("ticketstatus_display", ticketstatus_display);
+                    session.setAttribute("lastoccurrence_display", lastoccurrence_display);
+                    session.setAttribute("node_display", node_display);
+                    session.setAttribute("resolution_display", resolution_display);
+                    session.setAttribute("servername_display", servername_display);
+                    session.setAttribute("alertgroup_display", alertgroup_display);
+                    session.setAttribute("component_display", component_display);
+                    session.setAttribute("firstoccurrence_display", firstoccurrence_display);
+                    session.setAttribute("severity_display", severity_display);
+                    session.setAttribute("ticketsPerPage", ticketsPerPage);
+                }
             }
             else{
 //                若没有url变量，则必为初始化或者其他servlet跳转
@@ -138,48 +188,6 @@ public class pageUser extends HttpServlet {
                     }
                     tickets = user.searchTicket(params);
                 }
-//                2. 高级搜索
-                else if(req.getParameter("complex_search")!=null){
-                    // access
-                    String id = String.valueOf(session.getAttribute("_userid_"));
-                    UserDao user = new UserDao();
-                    User u = user.getUserbyid(id);
-                    if (!u.isSear()) {
-                        session.setAttribute("alert","noaccess");
-                        String script = "<script>location.href='../.userManage'</script>";
-                        resp.getWriter().println(script);
-                        return;
-                    }
-
-                    int row;
-                    String r = req.getParameter("row");
-                    try {
-                        row = Integer.valueOf(r);
-                    } catch (NumberFormatException e) {
-                        row = 1;
-                    }
-                    Map<String, String> params = new HashMap<String, String>();
-                    List<String> relat = new ArrayList<>();
-                    String attr_1 = req.getParameter("attr_1");
-                    String search_1 = req.getParameter("search_1");
-                    params.put(attr_1, search_1);
-                    for(int i=2;i<=row;i++){
-                        String relation = req.getParameter("relation_" + String.valueOf(i));
-                        relat.add(relation);
-                        String attr = req.getParameter("attr_" + String.valueOf(i));
-                        String search = req.getParameter("search_" + String.valueOf(i));
-                        params.put(attr, search);
-                    }
-
-                    for(String key:params.keySet()){
-                        System.out.println(key+"   "+params.get(key));
-                    }
-                    for(String key:relat){
-                        System.out.println(key);
-                    }
-
-                    tickets = user.complex_searchTicket(params, relat);
-                }
 //                3. 一般情况
                 else {
                     /*  test
@@ -187,12 +195,14 @@ public class pageUser extends HttpServlet {
                     tickets = pg.listAllTickets();*/
                     UserDao user = new UserDao();
                     tickets = user.getallTicket();
+                    System.out.println("sckd;lsafjlkdsfsddsf");
                 }
 
                 session.setAttribute("tickets", tickets);
                 try {
 //                    若session中有ticketsPerPage，则为其他servlet跳转
                     ticketsPerPage = (int)session.getAttribute("ticketsPerPage");
+
                 } catch (Exception e) {
 //                    若session中没有ticketsPerPage，则为初始化
                     ticketsPerPage = 10;
@@ -216,6 +226,7 @@ public class pageUser extends HttpServlet {
                     session.setAttribute("ticketstatus_display", true);
                     session.setAttribute("ticketsPerPage", ticketsPerPage);
                 }
+
             }
         }
         int totalTickets = tickets.size();

@@ -655,7 +655,7 @@
                                     <script language="javascript">
                                         function ticketCheck_search(){
                                             if(ticketSearch.ipccustomer_search.value=="" && ticketSearch.customercode_search.value=="" && ticketSearch.cause_search.value=="" && ticketSearch.summary_search.value=="" && ticketSearch.componenttype_search.value=="" && ticketSearch.ostype_search.value=="" && ticketSearch.identifier_search.value=="" && ticketSearch.ticketstatus_search.value=="" && ticketSearch.lastoccurrence_search.value=="" && ticketSearch.node_search.value=="" && ticketSearch.resolution_search.value=="" && ticketSearch.servername_search.value=="" && ticketSearch.alertgroup_search.value=="" && ticketSearch.component_search.value=="" && ticketSearch.firstoccurrence_search.value=="" && ticketSearch.severity_search.value=="") {
-                                                toast.warning("请至少输入一个查询条件");
+                                                toastr.warning("请至少输入一个查询条件");
                                                 return false;
                                             }
                                             return true;

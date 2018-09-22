@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>工作票查询</title>
-    <link rel="icon" href="icon/favicon.ico">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="static.bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="static.bootstrap/css/dashboard.css" >
+    <link rel="icon" href="icon/favicon.ico">
+    <title>工作票查询</title>
+    <link href="static.bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static.bootstrap/css/signin.css" rel="stylesheet">
+    <link href="static.bootstrap/css/carousel.css" rel="stylesheet">
     <link href="toastr/toastr.min.css" rel="stylesheet">
     <script src="jquery/jquery-3.3.1.min.js"></script>
     <script src="toastr/toastr.min.js"></script>
@@ -16,6 +17,7 @@
         }
     </style>
     <script type="text/javascript">
+        var row = 1;
         toastr.options = {
             "closeButton": true,                            //是否显示关闭按钮
             "debug": false,                                 //是否使用debug模式
@@ -31,52 +33,36 @@
         };
         function showalert(alertInfo){
             var clear = false;
-            var clear_id = false;
             if(alertInfo==null){
                 alertInfo = '<%=session.getAttribute("alert")%>';
                 clear = true;
             }
             if(alertInfo!='null'){
-                if(alertInfo=="login_success"){ toastr.success("登录成功！");}
-                else if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
-                else if(alertInfo=="success_add"){
-                    toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
-                    clear_id = true;
-                }
-                else if(alertInfo=="success"){ toastr.success("操作成功！");}
+                if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
                 else { toastr.error('操作失败！');}
                 if(clear){ <%session.removeAttribute("alert");%>}
-                if(clear_id){ <%session.removeAttribute("success_id");%>}
             }
         }
     </script>
 </head>
-
-<body>
-<div class="navbar-wrapper">
-    <div class="container">
-        <nav class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="">工作票数据管理系统</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="../.userManage">返回</a></li>
-                        <li><a href="logout.jsp">退出</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<body onload="showalert(null)">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">工作票数据管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a onclick="javascript:history.back(-1);">返回</a></li>
+                <li><a href="logout.jsp">退出</a></li>
+            </ul>
+        </div>
     </div>
-</div>
+</nav>
 <br>
 <br>
 
@@ -91,13 +77,13 @@
             <script type="text/javascript">
                 function addTableRow() {
                     if(row == 5){
-                        toast.warning("最多只能有五个条件");
+                        toastr.warning("最多只能有五个条件");
                         return;
                     }
                     row += 1;
                     var tr="<tr><td><input type=\"checkbox\" name=\"check" + row.toString() + "\" checked style=\"display: none\"/>" +
                         "<select class=\"selectpicker\" name=\"relation_" + row.toString() +
-                        "_hidden\"><option value=\"and\" selected>并且</option><option value=\"or\">或者</option><option value=\"not\">不含</option></select><input type=\"hidden\" name=\"relation_" + row.toString() +
+                        "_hidden\" style=\"font-size: 10px;\"><option value=\"and\" selected>并且</option><option value=\"or\">或者</option></select><input type=\"hidden\" name=\"relation_" + row.toString() +
                         "\"></td>" +
                         "<td><div class=\"input-group\"><span class=\"input-group-addon\"><select class=\"selectpicker\" name=\"attr_" + row.toString() +
                         "_hidden\" style=\"width: 120px;\"><option value=\"whatever\" selected>请选择字段</option><option value=\"ticketnumber\">ID</option><option value=\"ipccustomer\">用户全称</option><option value=\"customercode\">用户代码</option><option value=\"cause\">原因</option><option value=\"summary\">问题描述</option><option value=\"componenttype\">组件类型</option><option value=\"ostype\">OS类型</option><option value=\"identifier\">标识符</option><option value=\"ticketstatus\">状态</option><option value=\"lastoccurrence\">闭合时间</option><option value=\"node\">节点ID</option><option value=\"resolution\">解决方案</option><option value=\"servername\">服务器名称</option><option value=\"alertgroup\">告警组</option><option value=\"component\">组件</option><option value=\"firstoccurrence\">产生时间</option><option value=\"severity\">问题严重程度</option></select><input type=\"hidden\" name=\"attr_" + row.toString() +
@@ -167,17 +153,6 @@
         </table>
         <div class="container" align="center" style="width: 370px;">
             <div class="input-group">
-                <span class="input-group-addon" style="width: 85px;"><i class="glyphicon glyphicon-picture"></i></span>
-                <select class="selectpicker form-control" name="chart_hidden" style="width: 250px;">
-                    <option value="bar" selected>柱状图</option>
-                    <option value="pie">饼图</option>
-                    <option value="both">柱状图和饼图</option>
-                </select>
-                <input type="hidden" name="chart">
-            </div>
-            <br>
-            <br>
-            <div class="input-group">
                 <span class="input-group-addon" style="width: 85px;text-align: center;">每页显示</span>
                 <input type="text" class="form-control" value="10" name="ticketsPerPage" style="width: 250px;">
             </div>
@@ -190,20 +165,21 @@
                 }
                 function check(){
                     if(!isNumber(data.ticketsPerPage.value) || data.ticketsPerPage.value < 1) {
-                        alert("每页显示的工作票数必须为正整数");
+                        toastr.warning("每页显示的工作票数必须为正整数");
                         return false;
                     }
                     data.row.value = row;
                     data.attr_1.value = data.attr_1_hidden.value;
-                    if(data.attr_1.value == "whatever"){
-                        toast.warning("请选择字段");
+
+                    if(data.attr_1.value=="whatever"){
+                        toastr.warning("请选择字段");
                         return false;
                     }
                     if(row >= 2){
                         data.attr_2.value = data.attr_2_hidden.value;
                         data.relation_2.value = data.relation_2_hidden.value;
                         if(data.attr_2.value == "whatever"){
-                            toast.warning("请选择字段");
+                            toastr.warning("请选择字段");
                             return false;
                         }
                     }
@@ -211,7 +187,7 @@
                         data.attr_3.value = data.attr_3_hidden.value;
                         data.relation_3.value = data.relation_3_hidden.value;
                         if(data.attr_3.value == "whatever"){
-                            toast.warning("请选择字段");
+                            toastr.warning("请选择字段");
                             return false;
                         }
                     }
@@ -219,7 +195,7 @@
                         data.attr_4.value = data.attr_4_hidden.value;
                         data.relation_4.value = data.relation_4_hidden.value;
                         if(data.attr_4.value == "whatever"){
-                            toast.warning("请选择字段");
+                            toastr.warning("请选择字段");
                             return false;
                         }
                     }
@@ -227,15 +203,14 @@
                         data.attr_5.value = data.attr_5_hidden.value;
                         data.relation_5.value = data.relation_5_hidden.value;
                         if(data.attr_5.value == "whatever"){
-                            toast.warning("请选择字段");
+                            toastr.warning("请选择字段");
                             return false;
                         }
                     }
-                    data.chart.value = data.chart_hidden.value;
                     return true;
                 }
             </script>
-            <button class="btn btn-lg btn-primary btn-block" type="submit" name="complex_search" onclick="return check();">查询</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="complex_search" value="complex_search" onclick="return check();">查询</button>
         </div>
     </form>
 </div>

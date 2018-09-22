@@ -167,7 +167,7 @@
                     <script language="javascript">
                         function check(){
                             if(forget.id.value=="" || forget.pwd.value=="" || forget.id_num.value=="") {
-                                toast.warning("信息填写不完整");
+                                toastr.warning("信息填写不完整");
                                 return false;
                             }
                             return true;

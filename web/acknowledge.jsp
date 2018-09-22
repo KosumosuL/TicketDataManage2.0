@@ -42,30 +42,56 @@
 
         <div class="cover-container">
 
-            <div class="masthead clearfix">
-                <div class="inner">
-                    <h3 class="masthead-brand">TDM</h3>
-                    <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="">Home</a></li>
-                            <li><a href="acknowledge.jsp">Acknowledge</a></li>
-                        </ul>
+            <div class="navbar-wrapper">
+                <div class="container">
+
+                    <nav class="navbar navbar-inverse navbar-static-top">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">工作票数据管理系统</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="index.jsp">总览</a></li>
+                                    <li><a href="login.jsp">登录</a></li>
+                                    <li><a href="register.jsp">注册</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-header">用户</li>
+                                            <li><a href=".adminManage">查看</a></li>
+                                            <li><a href="forget.jsp">修改密码</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li class="dropdown-header">工作票</li>
+                                            <li><a href=".userManage">查看</a></li>
+                                            <li><a href=".filterStatis">统计分析</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="active"><a href="#">致谢</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </nav>
+
                 </div>
             </div>
 
             <div class="inner cover">
                 <h1 class="cover-heading">Ticket Data Manager</h1>
-                <p class="lead">Allow efficient management of your tickets, featured with statistical analysis and user management.</p>
-                <p class="lead">
-                    <a href="login.jsp" class="btn btn-lg btn-default">Sign in</a>
-                    <a href="register.jsp" class="btn btn-lg btn-default">Sign up</a>
-                </p>
+                <p class="lead">Courtesy to <a href="https://github.com/twbs/bootstrap">Bootstrap</a> and <a href="https://github.com/apache/incubator-echarts">ECharts</a><br>Supervised by Professor Xu Jian(dolphin.xu@njust.edu.cn)</p>
             </div>
 
             <div class="mastfoot">
                 <div class="inner">
-                    <p>Achieved by Team 2-6</p>
+                    <p>Achieved by Zhao Liang and Zhang Zhengxi of Team 2-6</p>
                 </div>
             </div>
 
