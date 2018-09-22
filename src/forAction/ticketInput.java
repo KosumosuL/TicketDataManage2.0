@@ -42,8 +42,8 @@ public class ticketInput extends HttpServlet {
     }
 
     protected void service(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        response.setContentType("text/html;charset=utf-8");       // note！！
-        request.setCharacterEncoding("utf-8");    //note!!
+        response.setContentType("text/html;charset=utf-8");
+        request.setCharacterEncoding("utf-8");
 
         // access
         UserDao user = new UserDao();
@@ -51,7 +51,8 @@ public class ticketInput extends HttpServlet {
         String id = String.valueOf(session.getAttribute("_userid_"));
         User u = user.getUserbyid(id);
         if(!u.isInut()){
-            String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+            session.setAttribute("alert","noaccess");
+            String script = "<script>location.href='../.userManage'</script>";
             response.getWriter().println(script);
             return;
         }
@@ -102,7 +103,8 @@ public class ticketInput extends HttpServlet {
             }
         }
         } catch (Exception ex) {
-            String script = "<script>alert('导入工作票失败');location.href='../.userManage'</script>";
+            session.setAttribute("alert","failure");
+            String script = "<script>location.href='../.userManage'</script>";
             response.getWriter().println(script);
         }
 
@@ -152,16 +154,27 @@ public class ticketInput extends HttpServlet {
                 System.out.println(component);
                 System.out.println(firstoccurrence);
                 System.out.println(severity);
+                if(user.findTicket(ticketnumber)){
+                    session.setAttribute("alert","exist");
+                    session.setAttribute("success_id",ticketnumber);
+                    String script = "<script>location.href='../.userManage'</script>";
+                    response.getWriter().println(script);
+                    return;
+                }
                 if(user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
-                    String script = "<script>alert('导入工作票成功,工作票id为：" + ticketnumber + "');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","success_input");
+                    session.setAttribute("success_id",ticketnumber);
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                 }
                 else{
-                    String script = "<script>alert('导入工作票失败');location.href='../.userManage'</script>";
+                    session.setAttribute("alert","failure");
+                    String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                 }
             }catch (Exception e){
-                String script = "<script>alert('导入工作票失败');location.href='../.userManage'</script>";
+                session.setAttribute("alert","failure");
+                String script = "<script>location.href='../.userManage'</script>";
                 response.getWriter().println(script);
                 System.out.println(e.getMessage());
             }

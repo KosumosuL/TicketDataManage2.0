@@ -9,12 +9,6 @@
         <img src="bkimg/12.png" width="1000" height="676">
         <p>对不起，您没有权限访问该页面！</p>
         <p><a class="btn btn-lg btn-success" href="index.jsp" role="button">回到首页</a></p>
-        <%--等待美工--%>
-        <%--<p>请先登录或者注册</p>--%>
-        <%--<p>--%>
-            <%--<a class="btn btn-lg btn-info" href="login.jsp" role="button">登录</a>--%>
-            <%--<a class="btn btn-lg btn-info" href="register.jsp" role="button">注册</a>--%>
-        <%--</p>--%>
     </div>
 
 <!-- Bootstrap core JavaScript

@@ -89,28 +89,6 @@ public class UserDao {
         return list.get(0);
     }
 
-//    public String[] getUser(String id){
-//        openSession();
-//
-//        String[] res = new String[12];
-//        User p =(User) s.get(User.class, id);
-//        res[0] = p.getId();
-//        res[1] = p.getPwd();
-//        res[2] = p.getName();
-//        res[3] = p.getBaddr();
-//        res[4] = p.getBdate();
-//        res[5] = p.getId_num();
-//        res[6] = p.getTel();
-//        res[7] = String.valueOf(p.isView());
-//        res[8] = String.valueOf(p.isSear());
-//        res[9] = String.valueOf(p.isTadd());
-//        res[10] = String.valueOf(p.isStatis());
-//        res[11] = String.valueOf(p.isInut());
-//
-//        closeSession(false);
-//        return res;
-//    }
-
     public void printUser(String id){
         openSession();
 
@@ -135,6 +113,7 @@ public class UserDao {
         closeSession(flag);
         return flag;
     }
+
     // 在checkidnum之后调用
     public boolean modifyUserPwd(String id, String _new) {
         openSession();
@@ -211,37 +190,6 @@ public class UserDao {
         return flag;
     }
 
-//    public String[] getTicket(String ticketnumber){
-//        openSession();
-//
-//        String[] res = new String[12];
-//        User p =(User) s.get(User.class, ticketnumber);
-//        res[0] = p.getId();
-//        res[1] = p.getPwd();
-//        res[2] = p.getName();
-//        res[3] = p.getBaddr();
-//        res[4] = p.getBdate();
-//        res[5] = p.getId_num();
-//        res[6] = p.getTel();
-//        res[7] = String.valueOf(p.isView());
-//        res[8] = String.valueOf(p.isSear());
-//        res[9] = String.valueOf(p.isTadd());
-//        res[10] = String.valueOf(p.isStatis());
-//        res[11] = String.valueOf(p.isInout());
-//
-//        closeSession(false);
-//        return res;
-//    }
-//
-//    public void printTicket(String id){
-//        openSession();
-//
-//        User p =(User) s.get(User.class, id);
-//        System.out.println("id:"+p.getId()+"\npwd:"+p.getPwd()+"\nname:"+p.getName()+"\nbaddr"+p.getBaddr()+"\nbdate"+p.getBdate()+"\nid_num"+p.getId_num()+"\ntel"+p.getTel()+"\naccess:"+String.valueOf(p.isView())+String.valueOf(p.isSear())+String.valueOf(p.isTadd())+String.valueOf(p.isStatis())+String.valueOf(p.isInout()));
-//
-//        closeSession(false);
-//    }
-
     // show all users
     public List<Ticket> getallTicket() {
         openSession();
@@ -275,21 +223,6 @@ public class UserDao {
 
         return list;
     }
-
-//    public void printallTicket() {
-//        openSession();
-//
-//        Query query=s.createQuery("from Ticket");
-//        List<User> list=query.list();
-//
-//        for(int i=0; i<list.size(); i++) {
-//            User p=list.get(i);
-//            System.out.println("id:"+p.getId()+"\npwd:"+p.getPwd()+"\nname:"+p.getName()+"\nbaddr"+p.getBaddr()+"\nbdate"+p.getBdate()+"\nid_num"+p.getId_num()+"\ntel"+p.getTel()+"\naccess:"+String.valueOf(p.isView())+String.valueOf(p.isSear())+String.valueOf(p.isTadd())+String.valueOf(p.isStatis())+String.valueOf(p.isInout()));
-//        }
-//
-//        closeSession(false);
-//    }
-
 
     // for searching
 //    public List<Ticket> searchTicket(Map<String, String> params) {

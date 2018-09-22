@@ -57,7 +57,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a onclick="javascript:history.back(-1);">返回</a></li>
+                <li><a href="../.userManage">返回</a></li>
                 <li><a href="logout.jsp">退出</a></li>
             </ul>
         </div>

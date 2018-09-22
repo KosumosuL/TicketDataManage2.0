@@ -13,38 +13,13 @@
             background-size: 100% 100%;
         }
     </style>
-    <script type="text/javascript">
-        function showalert(alertInfo){
-            var clear = false;
-            if(alertInfo==null){
-                alertInfo = '<%=session.getAttribute("alert")%>';
-                clear = true;
-            }
-            if(alertInfo!='null'){
-                var url = "alert.jsp?alert=" + alertInfo;
-                var name = "警告";
-                var iWidth = 400;
-                var iHeight = 180;
-                var iTop = (window.screen.height-30-iHeight)/2;
-                var iLeft = (window.screen.width-10-iWidth)/2;
-                window.open(url,name,'height='+iHeight+',innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',directories=no,scrollbars=no,titlebar=no,toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
-                if(clear){
-                    <%session.removeAttribute("alert");%>
-                }
-            }
-        }
-    </script>
 </head>
-<body onload="showalert(null)">
+<body>
 <div class="site-wrapper">
-
     <div class="site-wrapper-inner">
-
         <div class="cover-container">
-
             <div class="navbar-wrapper">
                 <div class="container">
-
                     <nav class="navbar navbar-inverse navbar-static-top">
                         <div class="container">
                             <div class="navbar-header">
@@ -65,11 +40,12 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <li class="dropdown-header">用户</li>
-                                            <li><a href=".adminManage">查看</a></li>
+                                            <li><a href=".adminManage">总览</a></li>
                                             <li><a href="forget.jsp">修改密码</a></li>
                                             <li role="separator" class="divider"></li>
                                             <li class="dropdown-header">工作票</li>
-                                            <li><a href=".userManage">查看</a></li>
+                                            <li><a href=".userManage">总览</a></li>
+                                            <li><a href=".filterSearch">查询</a></li>
                                             <li><a href=".filterStatis">统计分析</a></li>
                                         </ul>
                                     </li>
@@ -80,10 +56,8 @@
                             </div>
                         </div>
                     </nav>
-
                 </div>
             </div>
-
             <div class="inner cover">
                 <h1 class="cover-heading">Ticket Data Manager</h1>
                 <p class="lead">Courtesy to <a href="https://github.com/twbs/bootstrap">Bootstrap</a> and <a href="https://github.com/apache/incubator-echarts">ECharts</a><br>Supervised by Professor Xu Jian(dolphin.xu@njust.edu.cn)</p>
@@ -91,7 +65,7 @@
 
             <div class="mastfoot">
                 <div class="inner">
-                    <p>Achieved by Zhao Liang and Zhang Zhengxi of Team 2-6</p>
+                    <p>Achieved by Zhang Zhengxi and Zhao Liang of Team 2-6</p>
                 </div>
             </div>
 

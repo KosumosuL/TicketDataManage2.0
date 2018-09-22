@@ -48,7 +48,8 @@ public class ticketMultiOutput extends HttpServlet {
         UserDao user = new UserDao();
         User u = user.getUserbyid(id);
         if (!u.isInut()) {
-            String script = "<script>alert('没有权限');location.href='../.userManage'</script>";
+            session.setAttribute("alert","noaccess");
+            String script = "<script>location.href='../.userManage'</script>";
             response.getWriter().println(script);
             return;
         }
@@ -163,7 +164,8 @@ public class ticketMultiOutput extends HttpServlet {
 
 
         }catch (Exception e){
-            String script = "<script>alert('导出工作票失败');location.href='../.userManage'</script>";
+            session.setAttribute("alert","failure");
+            String script = "<script>location.href='../.userManage'</script>";
             response.getWriter().println(script);
         }
 

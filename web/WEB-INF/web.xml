@@ -37,6 +37,14 @@
         <servlet-name>filterStatis</servlet-name>
         <url-pattern>*.filterStatis</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>filterSearch</servlet-name>
+        <servlet-class>forFilter_Page.filterSearch</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>filterSearch</servlet-name>
+        <url-pattern>*.filterSearch</url-pattern>
+    </servlet-mapping>
     <!--管理界面-->
     <servlet>
         <servlet-name>userManage</servlet-name>

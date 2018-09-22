@@ -27,7 +27,6 @@
         };
         function showalert(alertInfo){
             var clear = false;
-            var clear_id = false;
             if(alertInfo==null){
                 alertInfo = '<%=session.getAttribute("alert")%>';
                 clear = true;
@@ -35,14 +34,25 @@
             if(alertInfo!='null'){
                 if(alertInfo=="login_success"){ toastr.success("登录成功！");}
                 else if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
+                else if(alertInfo=="exist"){
+                    toastr.error("导入工作票失败！已存在工作票ID：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
+                    <%session.removeAttribute("success_id");%>;
+                }
                 else if(alertInfo=="success_add"){
                     toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
-                    clear_id = true;
+                    <%session.removeAttribute("success_id");%>;
+                }
+                else if(alertInfo=="success_input"){
+                    toastr.success("导入工作票成功！导入工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
+                    <%session.removeAttribute("success_id");%>;
+                }
+                else if(alertInfo=="success_search"){
+                    toastr.info("搜索结果：" + '<%=session.getAttribute("info")%>', {"timeOut":"30"},{"positionClass": "toast-top-full-width",});
+                    <%session.removeAttribute("info");%>;
                 }
                 else if(alertInfo=="success"){ toastr.success("操作成功！");}
                 else { toastr.error('操作失败！');}
                 if(clear){ <%session.removeAttribute("alert");%>}
-                if(clear_id){ <%session.removeAttribute("success_id");%>}
             }
         }
     </script>
@@ -103,7 +113,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a>总览<span class="sr-only">(current)</span></a></li>
-                <li><a href="search.jsp">查询</a></li>
+                <li><a href=".filterSearch">查询</a></li>
                 <li><a href=".filterStatis">统计</a></li>
             </ul>
             <ul class="nav nav-sidebar">
@@ -201,7 +211,7 @@
                 总页数:${totalPages}
                 当前页:${page}
                 <form name="ticketAdd" action="forAction/.servletuserManage" method="post" style="display: inline;">
-                    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#ticket_add">新增</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#ticket_add">新增</button>
                     <div class="modal fade" id="ticket_add" tabindex="-1" role="dialog" aria-labelledby="ticket_add_label" aria-hidden="true">
                         <div class="modal-dialog" style="width: 1000px;">
                             <div class="modal-content">
@@ -436,7 +446,7 @@
                     </div>
                 </form>
                 <form name="ticketSearch" action="/.userManage" method="post" style="display: inline;">
-                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#ticket_search">查询</button>
+                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#ticket_search">查询</button>
                     <div class="modal fade" id="ticket_search" tabindex="-1" role="dialog" aria-labelledby="ticket_search_label" aria-hidden="true">
                         <div class="modal-dialog" style="width: 1000px;">
                             <div class="modal-content">
@@ -670,8 +680,8 @@
                         <!-- /.modal-dialog -->
                     </div>
                 </form>
-                <form name="ticketInput" action="" method="post" enctype="multipart/form-data" style="display: inline;">
-                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#ticketInput">导入</button>
+                <form name="ticketInput" action="forAction/.servletticketInput" method="post" enctype="multipart/form-data" style="display: inline;">
+                    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#ticketInput">导入</button>
                     <div class="modal fade" id="ticketInput" tabindex="-1" role="dialog" aria-labelledby="ticketInput_label" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

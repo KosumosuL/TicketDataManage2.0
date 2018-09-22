@@ -81,9 +81,6 @@ public class pageAdmin extends HttpServlet {
             }
             else{
 //                若没有url变量，则必为初始化或者其他servlet跳转
-                /*  test
-                testPage pg = new testPage();
-                users = pg.listAllUsers();*/
                 AdminDao adm = new AdminDao();
                 users = adm.getallUser();
                 session.setAttribute("users", users);
@@ -93,14 +90,6 @@ public class pageAdmin extends HttpServlet {
                 } catch (Exception e) {
 //                    若session中没有usersPerPage，则为初始化
                     usersPerPage = 10;
-                    /*  test
-                    session.setAttribute("_adminid_", "007");
-                    session.setAttribute("_adminname_", "James Bond");
-                    session.setAttribute("_adminpwd_", "007");
-                    session.setAttribute("_adminbaddr_", "国外");
-                    session.setAttribute("_adminbdate_", "1962-10-5");
-                    session.setAttribute("_adminid_num_", "007");
-                    session.setAttribute("_admintel_", "007");*/
 //                    default setting
                     session.setAttribute("name_display", true);
                     session.setAttribute("baddr_display", true);

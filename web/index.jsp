@@ -37,11 +37,12 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-header">用户</li>
-                                <li><a href=".adminManage">查看</a></li>
+                                <li><a href=".adminManage">总览</a></li>
                                 <li><a href="forget.jsp">修改密码</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">工作票</li>
-                                <li><a href=".userManage">查看</a></li>
+                                <li><a href=".userManage">总览</a></li>
+                                <li><a href=".filterSearch">查询</a></li>
                                 <li><a href=".filterStatis">统计分析</a></li>
                             </ul>
                         </li>

@@ -75,7 +75,8 @@
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">工作票</li>
                                 <li><a href=".userManage">总览</a></li>
-                                <li><a href="search.jsp">查询</a></li>
+                                <li><a href=".filterSearch">查询</a></li>
+                                <li><a href=".filterStatis">统计分析</a></li>
                             </ul>
                         </li>
                         <%--<li><a href="personal.jsp">个人信息</a></li>--%>

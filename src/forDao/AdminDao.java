@@ -100,23 +100,6 @@ public class AdminDao  {
         return flag;
     }
 
-    public String[] getAdmin(String id){
-        openSession();
-
-        String[] res = new String[8];
-        Admin p =(Admin) s.get(Admin.class, id);
-        res[0] = p.getId();
-        res[1] = p.getPwd();
-        res[2] = p.getName();
-        res[3] = p.getBaddr();
-        res[4] = p.getBdate();
-        res[5] = p.getId_num();
-        res[6] = p.getTel();
-
-        closeSession(false);
-        return res;
-    }
-
     public boolean deleteAdmin(String id){
         openSession();
 
@@ -237,28 +220,6 @@ public class AdminDao  {
         return flag;
     }
 
-    public String[] getUser(String id){
-        openSession();
-
-        String[] res = new String[12];
-        User p =(User) s.get(User.class, id);
-        res[0] = p.getId();
-        res[1] = p.getPwd();
-        res[2] = p.getName();
-        res[3] = p.getBaddr();
-        res[4] = p.getBdate();
-        res[5] = p.getId_num();
-        res[6] = p.getTel();
-        res[7] = String.valueOf(p.isView());
-        res[8] = String.valueOf(p.isSear());
-        res[9] = String.valueOf(p.isTadd());
-        res[10] = String.valueOf(p.isStatis());
-        res[11] = String.valueOf(p.isInut());
-
-        closeSession(false);
-        return res;
-    }
-
     public void printUser(String id){
         openSession();
 
@@ -331,20 +292,5 @@ public class AdminDao  {
         closeSession(flag);
         return flag;
     }
-
-    // 后期可分解为 增加 减少 清除 权限
-//    public boolean modifyAccess(String id, int access) {
-//        openSession();
-//
-//        boolean flag=false;
-//        User p=(User) s.get(User.class, id);
-//        if(p!=null) {
-//            p.setAccess(access);
-//            flag = true;
-//        }
-//
-//        closeSession(flag);
-//        return flag;
-//    }
 
 }
