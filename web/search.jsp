@@ -39,6 +39,7 @@
             }
             if(alertInfo!='null'){
                 if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
+                else if(alertInfo=="isdupl"){ toastr.warning("条目重复");}
                 else { toastr.error('操作失败！');}
                 if(clear){ <%session.removeAttribute("alert");%>}
             }
@@ -87,7 +88,7 @@
                         "\"></td>" +
                         "<td><div class=\"input-group\"><span class=\"input-group-addon\"><select class=\"selectpicker\" name=\"attr_" + row.toString() +
                         "_hidden\" style=\"width: 120px;\"><option value=\"whatever\" selected>请选择字段</option><option value=\"ticketnumber\">ID</option><option value=\"ipccustomer\">用户全称</option><option value=\"customercode\">用户代码</option><option value=\"cause\">原因</option><option value=\"summary\">问题描述</option><option value=\"componenttype\">组件类型</option><option value=\"ostype\">OS类型</option><option value=\"identifier\">标识符</option><option value=\"ticketstatus\">状态</option><option value=\"lastoccurrence\">闭合时间</option><option value=\"node\">节点ID</option><option value=\"resolution\">解决方案</option><option value=\"servername\">服务器名称</option><option value=\"alertgroup\">告警组</option><option value=\"component\">组件</option><option value=\"firstoccurrence\">产生时间</option><option value=\"severity\">问题严重程度</option></select><input type=\"hidden\" name=\"attr_" + row.toString() +
-                        "\"></span><input type=\"text\" class=\"form-control\" placeholder=\"300个字符以内\" name=\"search_" + row.toString() +
+                        "\"></span><input type=\"text\" class=\"form-control\" placeholder=\"45个字符以内\" name=\"search_" + row.toString() +
                         "\" style=\"width: 500px;\"></div></td>" +
                         "</tr><tr><td>" + "<input type=\"checkbox\" name=\"check" + row.toString() + "\" checked style=\"display: none\"/></td><td><div class=\"row\">&nbsp</div></td></tr>" +
                         "<tr><td>" + "<input type=\"checkbox\" name=\"check" + row.toString() + "\" checked style=\"display: none\"/></td><td><div class=\"row\">&nbsp</div></td></tr>";

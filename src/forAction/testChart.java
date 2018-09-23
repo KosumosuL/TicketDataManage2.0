@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.*;
 import forXml.Chart;
 import forDao.UserDao;
+import forXml.Ticket;
 
 @WebServlet(name = "testChart", urlPatterns = "/testChart")
 public class testChart extends HttpServlet {
@@ -35,8 +36,43 @@ public class testChart extends HttpServlet {
         }
         String attr = req.getParameter("attr");
         String chart = req.getParameter("chart");
-        UserDao usr = new UserDao();
-        Map mp = usr.countTicket(attr);
+
+        List<Ticket> tickl = (List<Ticket>)session.getAttribute("tickets");
+        List<String> list = new ArrayList<>();
+        for(int i=0;i<tickl.size();i++){
+            Ticket tmp = tickl.get(i);
+            switch (attr){
+                case "ticketnumber":list.add(tmp.getTicketnumber());break;
+                case "ipccustomer":list.add(tmp.getIpccustomer());break;
+                case "customercode":list.add(tmp.getCustomercode());break;
+                case "cause":list.add(tmp.getCause());break;
+                case "summary":list.add(tmp.getSummary());break;
+                case "componenttype":list.add(tmp.getComponenttype());break;
+                case "ostype":list.add(tmp.getOstype());break;
+                case "identifier":list.add(tmp.getIdentifier());break;
+                case "ticketstatus":list.add(tmp.getTicketstatus());break;
+                case "lastoccurrence":list.add(tmp.getLastoccurrence());break;
+                case "node":list.add(tmp.getNode());break;
+                case "resolution":list.add(tmp.getResolution());break;
+                case "servername":list.add(tmp.getSeverity());break;
+                case "alertgroup":list.add(tmp.getAlertgroup());break;
+                case "component":list.add(tmp.getComponent());break;
+                case "firstoccurrence":list.add(tmp.getFirstoccurrence());break;
+                case "severity":list.add(tmp.getSeverity());break;
+            }
+        }
+        System.out.println(list.size());
+        Map<String, Integer> mp = new HashMap<String, Integer>();
+        for(int i=0;i<list.size();i++){
+            int cnt = mp.containsKey(list.get(i)) ? mp.get(list.get(i)) : 0;
+            mp.put(list.get(i), cnt + 1);
+        }
+
+        for(String key:mp.keySet()){
+            System.out.println(key + " " + mp.get(key));
+        }
+//        UserDao usr = new UserDao();
+//        Map mp = usr.countTicket(attr);
         List<String> header = new ArrayList<String>(mp.keySet());
         List<Integer> data = new ArrayList<Integer>(mp.values());
         Chart obj = new Chart();

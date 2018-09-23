@@ -256,14 +256,14 @@ public class UserDao {
         return result;
     }
 
-    public List<Ticket> complex_searchTicket(Map<String, String> params, List<String> relat) {
+    public List<Ticket> complex_searchTicket(List<String> attr, List<String> sear, List<String> relat) {
         openSession();
 
         Criteria cr = s.createCriteria(Ticket.class);
 
         List<SimpleExpression> se = new ArrayList<>();
-        for(String key : params.keySet()){
-            SimpleExpression tmp = Restrictions.eq(key, params.get(key));
+        for(int i=0;i<attr.size();i++){
+            SimpleExpression tmp = Restrictions.eq(attr.get(i), sear.get(i));
             se.add(tmp);
         }
 
@@ -295,7 +295,7 @@ public class UserDao {
         System.out.println(list.size());
         Map<String, Integer> ans = new HashMap<String, Integer>();
         for(int i=0;i<list.size();i++){
-            int cnt = ans.containsKey(list.get(i)) ? ans.get(list.get(i)) : 1;
+            int cnt = ans.containsKey(list.get(i)) ? ans.get(list.get(i)) : 0;
             ans.put(list.get(i), cnt + 1);
         }
         closeSession(false);

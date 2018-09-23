@@ -3,6 +3,7 @@ package forUtility;
 import java.util.*;
 import java.util.regex.Pattern;
 import forDao.AdminDao;
+import forXml.Ticket;
 
 public class tools {
     final static Map<Integer, String> addrmap = new HashMap<Integer, String>();
@@ -174,6 +175,18 @@ public class tools {
         int id = Integer.parseInt(idx);
         if(!addrmap.containsKey(id))    return "";
         return addrmap.get(id);
+    }
+
+    public boolean valid_ticket(String ticketnumber, String ipccustomer, String customercode, String cause, String summary, String componenttype, String ostype,  String identifier, String ticketstatus, String lastoccurrence, String node, String resolution, String servername, String alertgroup, String component, String firstoccurrence, String severity){
+        String reg = "^[0-9]*$";
+        if(!Pattern.matches(reg,ticketnumber)||ticketnumber.length()>15)    return false;
+
+        if(ipccustomer.length()>45||customercode.length()>45||cause.length()>45||summary.length()>450
+                ||componenttype.length()>45||ostype.length()>45||identifier.length()>450
+                ||ticketstatus.length()>45||lastoccurrence.length()>45||node.length()>45
+                ||resolution.length()>450||servername.length()>45||alertgroup.length()>45
+                ||component.length()>45||firstoccurrence.length()>45||severity.length()>45)   return false;
+        return true;
     }
 
     public String getBdate(String bdate){

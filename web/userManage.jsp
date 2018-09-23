@@ -34,17 +34,19 @@
             if(alertInfo!='null'){
                 if(alertInfo=="login_success"){ toastr.success("登录成功！");}
                 else if(alertInfo=="noaccess"){ toastr.warning("没有权限！");}
+                else if(alertInfo=="invalid"){ toastr.warning("工作票不合法");}
                 else if(alertInfo=="exist"){
                     toastr.error("导入工作票失败！已存在工作票ID：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
                     <%session.removeAttribute("success_id");%>;
                 }
                 else if(alertInfo=="success_add"){
-                    toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
-                    <%session.removeAttribute("success_id");%>;
+                    <%--alert(<%=session.getAttribute("success_id")%>);--%>
+                    toastr.success("新增工作票成功！新增工作票的ID为：" + '<%=session.getAttribute("success_i")%>', {"timeOut":"50000"});
+                    <%session.removeAttribute("success_i");%>;
                 }
                 else if(alertInfo=="success_input"){
-                    toastr.success("导入工作票成功！导入工作票的ID为：" + '<%=session.getAttribute("success_id")%>', {"timeOut":"50000"});
-                    <%session.removeAttribute("success_id");%>;
+                    toastr.success("导入工作票成功！导入工作票的ID为：" + '<%=session.getAttribute("success_ii")%>', {"timeOut":"50000"});
+                    <%session.removeAttribute("success_ii");%>;
                 }
                 else if(alertInfo=="success_search"){
                     toastr.info("搜索结果：" + '<%=session.getAttribute("info")%>', {"timeOut":"30"},{"positionClass": "toast-top-full-width",});
@@ -228,13 +230,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">ID</span>
-                                                    <input type="text" class="form-control" name="ticketnumber_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ticketnumber_add" placeholder="15个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">用户全称</span>
-                                                    <input type="text" class="form-control" name="ipccustomer_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ipccustomer_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -252,13 +254,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">用户代码</span>
-                                                    <input type="text" class="form-control" name="customercode_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="customercode_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">原因</span>
-                                                    <input type="text" class="form-control" name="cause_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="cause_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -276,13 +278,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">问题描述</span>
-                                                    <input type="text" class="form-control" name="summary_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="summary_add" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">组件类型</span>
-                                                    <input type="text" class="form-control" name="componenttype_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="componenttype_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -300,13 +302,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">OS类型</span>
-                                                    <input type="text" class="form-control" name="ostype_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ostype_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">标识符</span>
-                                                    <input type="text" class="form-control" name="identifier_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="identifier_add" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -324,13 +326,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">状态</span>
-                                                    <input type="text" class="form-control" name="ticketstatus_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ticketstatus_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">闭合时间</span>
-                                                    <input type="text" class="form-control" name="lastoccurrence_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="lastoccurrence_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -348,13 +350,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">节点ID</span>
-                                                    <input type="text" class="form-control" name="node_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="node_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">解决方案</span>
-                                                    <input type="text" class="form-control" name="resolution_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="resolution_add" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -372,13 +374,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">服务器名称</span>
-                                                    <input type="text" class="form-control" name="servername_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="servername_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">告警组</span>
-                                                    <input type="text" class="form-control" name="alertgroup_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="alertgroup_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -396,13 +398,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">组件</span>
-                                                    <input type="text" class="form-control" name="component_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="component_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">产生时间</span>
-                                                    <input type="text" class="form-control" name="firstoccurrence_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="firstoccurrence_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -420,7 +422,7 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">问题严重程度</span>
-                                                    <input type="text" class="form-control" name="severity_add" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="severity_add" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -463,13 +465,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">ID</span>
-                                                    <input type="text" class="form-control" name="ticketnumber_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ticketnumber_search" placeholder="15个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">用户全称</span>
-                                                    <input type="text" class="form-control" name="ipccustomer_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ipccustomer_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -487,13 +489,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">用户代码</span>
-                                                    <input type="text" class="form-control" name="customercode_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="customercode_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">原因</span>
-                                                    <input type="text" class="form-control" name="cause_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="cause_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -511,13 +513,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">问题描述</span>
-                                                    <input type="text" class="form-control" name="summary_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="summary_search" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">组件类型</span>
-                                                    <input type="text" class="form-control" name="componenttype_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="componenttype_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -535,13 +537,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">OS类型</span>
-                                                    <input type="text" class="form-control" name="ostype_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ostype_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">标识符</span>
-                                                    <input type="text" class="form-control" name="identifier_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="identifier_search" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -559,13 +561,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">状态</span>
-                                                    <input type="text" class="form-control" name="ticketstatus_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="ticketstatus_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">闭合时间</span>
-                                                    <input type="text" class="form-control" name="lastoccurrence_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="lastoccurrence_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -583,13 +585,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">节点ID</span>
-                                                    <input type="text" class="form-control" name="node_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="node_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">解决方案</span>
-                                                    <input type="text" class="form-control" name="resolution_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="resolution_search" placeholder="450个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -607,13 +609,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">服务器名称</span>
-                                                    <input type="text" class="form-control" name="servername_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="servername_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">告警组</span>
-                                                    <input type="text" class="form-control" name="alertgroup_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="alertgroup_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -631,13 +633,13 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">组件</span>
-                                                    <input type="text" class="form-control" name="component_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="component_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">产生时间</span>
-                                                    <input type="text" class="form-control" name="firstoccurrence_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="firstoccurrence_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>
@@ -655,7 +657,7 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon" style="width: 110px;text-align: center;">问题严重程度</span>
-                                                    <input type="text" class="form-control" name="severity_search" placeholder="300个字符以内" style="width: 250px;">
+                                                    <input type="text" class="form-control" name="severity_search" placeholder="45个字符以内" style="width: 250px;">
                                                 </div>
                                             </td>
                                         </tr>

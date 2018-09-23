@@ -128,7 +128,7 @@
                 <td>
                     <div class="input-group">
                         <span class="input-group-addon" style="width: 85px;text-align: center;">密码</span>
-                        <input type="password" class="form-control" name="pwd" placeholder="8-16位数字和字母,至少2位数字" style="width: 250px;">
+                        <input type="password" class="form-control" name="pwd" placeholder="8-16位数字和字母" style="width: 250px;">
                     </div>
                 </td>
             </tr>

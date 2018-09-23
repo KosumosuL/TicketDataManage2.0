@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import forDao.*;
+import forUtility.tools;
 import forXml.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -78,9 +79,25 @@ public class userManage extends HttpServlet {
             String firstoccurrence = request.getParameter("firstoccurrence_add");
             String severity = request.getParameter("severity_add");
 
+            tools t = new tools();
+            // vailid ticket
+            if(!t.valid_ticket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
+                session.setAttribute("alert","invalid");
+                String script = "<script>location.href='../.userManage'</script>";
+                response.getWriter().println(script);
+                return;
+            }
+            // check if ticket exist
+            if(user.findTicket(ticketnumber)){
+                session.setAttribute("alert","exist");
+                session.setAttribute("success_id",ticketnumber);
+                String script = "<script>location.href='../.userManage'</script>";
+                response.getWriter().println(script);
+                return;
+            }
             if(user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
                 session.setAttribute("alert","success_add");
-                session.setAttribute("success_id",id);
+                session.setAttribute("success_i",ticketnumber);
                 String script = "<script>location.href='../.userManage'</script>";
                 response.getWriter().println(script);
             }
@@ -102,7 +119,7 @@ public class userManage extends HttpServlet {
         for(int i=0;i<ticl.size();i++){
             Ticket tmp = ticl.get(i);
             String str = "delete_" + tmp.getTicketnumber();
-            System.out.println(str);
+//            System.out.println(str);
             if(request.getParameter(str) != null){
 
                 // access
@@ -120,13 +137,11 @@ public class userManage extends HttpServlet {
                     session.setAttribute("alert","success");
                     String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
-                    response.getWriter().println(script);
                     return ;
                 }
                 else{
                     session.setAttribute("alert","failure");
                     String script = "<script>location.href='../.userManage'</script>";
-                    response.getWriter().println(script);
                     response.getWriter().println(script);
                     return ;
                 }
@@ -192,6 +207,21 @@ public class userManage extends HttpServlet {
                 System.out.println(firstoccurrence);
                 System.out.println(severity);
                 System.out.println(str);
+                tools t = new tools();
+                if(!t.valid_ticket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
+                    session.setAttribute("alert","invalid");
+                    String script = "<script>location.href='../.userManage'</script>";
+                    response.getWriter().println(script);
+                    return;
+                }
+                // check if ticket exist
+                if(user.findTicket(ticketnumber)){
+                    session.setAttribute("alert","exist");
+                    session.setAttribute("success_id",ticketnumber);
+                    String script = "<script>location.href='../.userManage'</script>";
+                    response.getWriter().println(script);
+                    return;
+                }
                 if(user.deleteTicket(tmp.getTicketnumber()) && user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
                     session.setAttribute("alert","success");
                     String script = "<script>location.href='../.userManage'</script>";

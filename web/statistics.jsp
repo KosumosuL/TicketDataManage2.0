@@ -11,6 +11,9 @@
     <link href="static.bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static.bootstrap/css/signin.css" rel="stylesheet">
     <link href="static.bootstrap/css/carousel.css" rel="stylesheet">
+    <link href="toastr/toastr.min.css" rel="stylesheet">
+    <script src="jquery/jquery-3.3.1.min.js"></script>
+    <script src="toastr/toastr.min.js"></script>
     <style type="text/css">
         body{
             background-image: url(bkimg/13.jpg);
@@ -42,7 +45,7 @@
 
 <div class="container">
 
-    <form class="form-data" action="forTest.testchart" method="post" style="text-align: center;" name="data">
+    <form class="form-data" action=".testchart" method="post" style="text-align: center;" name="data">
         <h2 class="form-signin-heading">统计分析</h2>
         <br>
         <br>
@@ -111,7 +114,7 @@
                             data.attr.value = data.attr_hidden.value;
                             data.chart.value = data.chart_hidden.value;
                             if(data.attr.value=="" || data.chart.value=="") {
-                                alert("信息填写不完整，请重新输入!");
+                                toastr.warning("信息填写不完整，请重新输入!");
                                 return false;
                             }
                             return true;

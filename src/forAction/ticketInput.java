@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import forDao.*;
+import forUtility.*;
 import forXml.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -154,6 +155,14 @@ public class ticketInput extends HttpServlet {
                 System.out.println(component);
                 System.out.println(firstoccurrence);
                 System.out.println(severity);
+
+                tools t = new tools();
+                if(!t.valid_ticket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
+                    session.setAttribute("alert","invalid");
+                    String script = "<script>location.href='../.userManage'</script>";
+                    response.getWriter().println(script);
+                    return;
+                }
                 if(user.findTicket(ticketnumber)){
                     session.setAttribute("alert","exist");
                     session.setAttribute("success_id",ticketnumber);
@@ -163,7 +172,7 @@ public class ticketInput extends HttpServlet {
                 }
                 if(user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
                     session.setAttribute("alert","success_input");
-                    session.setAttribute("success_id",ticketnumber);
+                    session.setAttribute("success_ii",ticketnumber);
                     String script = "<script>location.href='../.userManage'</script>";
                     response.getWriter().println(script);
                 }

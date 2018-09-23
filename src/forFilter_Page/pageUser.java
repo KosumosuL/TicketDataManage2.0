@@ -84,23 +84,26 @@ public class pageUser extends HttpServlet {
                     } catch (NumberFormatException e) {
                         row = 1;
                     }
-                    Map<String, String> params = new HashMap<String, String>();
+
+                    List<String> attr= new ArrayList<>();
+                    List<String> sear= new ArrayList<>();
                     List<String> relat = new ArrayList<>();
                     String attr_1 = req.getParameter("attr_1");
                     String search_1 = req.getParameter("search_1");
                     System.out.println(attr_1);System.out.println(search_1);
-                    params.put(attr_1, search_1);
+                    attr.add(attr_1);sear.add(search_1);
                     for(int i=2;i<=row;i++){
                         String relation = req.getParameter("relation_" + String.valueOf(i));
                         relat.add(relation);
-                        String attr = req.getParameter("attr_" + String.valueOf(i));
-                        String search = req.getParameter("search_" + String.valueOf(i));
-                        params.put(attr, search);
+                        String attrt = req.getParameter("attr_" + String.valueOf(i));
+                        String searcht = req.getParameter("search_" + String.valueOf(i));
+                        attr.add(attrt);sear.add(searcht);
                     }
+
 
                     String info = new String();
                     List<String> pinfo = new ArrayList<>();
-                    for(String key:params.keySet()) pinfo.add(key + " = " + params.get(key));
+                    for(int i=0;i<attr.size();i++)  pinfo.add(attr.get(i) + " = " + sear.get(i));
                     for(int i=0;i<row-1;i++)        info += "(";
                     info += pinfo.get(0);
                     for(int i=0;i<row-1;i++)        info += " " + relat.get(i) + " " + pinfo.get(i+1) + ")";
@@ -108,7 +111,7 @@ public class pageUser extends HttpServlet {
 
                     session.setAttribute("alert","success_search");
                     session.setAttribute("info",info);
-                    tickets = user.complex_searchTicket(params, relat);
+                    tickets = user.complex_searchTicket(attr, sear, relat);
                     session.setAttribute("tickets", tickets);
                     session.setAttribute("ticketsPerPage", ticketsPerPage);
                 }
