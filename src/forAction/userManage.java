@@ -214,14 +214,6 @@ public class userManage extends HttpServlet {
                     response.getWriter().println(script);
                     return;
                 }
-                // check if ticket exist
-                if(user.findTicket(ticketnumber)){
-                    session.setAttribute("alert","exist");
-                    session.setAttribute("success_id",ticketnumber);
-                    String script = "<script>location.href='../.userManage'</script>";
-                    response.getWriter().println(script);
-                    return;
-                }
                 if(user.deleteTicket(tmp.getTicketnumber()) && user.addTicket(ticketnumber, ipccustomer, customercode, cause, summary, componenttype, ostype,  identifier, ticketstatus, lastoccurrence, node, resolution, servername, alertgroup, component, firstoccurrence, severity)){
                     session.setAttribute("alert","success");
                     String script = "<script>location.href='../.userManage'</script>";

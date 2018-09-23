@@ -91,9 +91,9 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <span class="input-group-addon" style="width: 85px;text-align: center;"><i class="glyphicon glyphicon-lock"></i></span>
+                        <span class="input-group-addon" style="width: 85px;text-align: center;"><i class="glyphicon glyphicon-picture"></i></span>
                         <select class="selectpicker form-control" onchange="chart.value=this.value" aria-describedby="basic-addon1" style="width: 250px;" name="chart_hidden">
-                            <option value="" selected>请选择工作票属性(字段)</option>
+                            <option value="" selected>请选择图表类型</option>
                             <%--<option value="line">折线图</option>--%>
                             <option value="bar">柱状图</option>
                             <option value="pie">饼图</option>

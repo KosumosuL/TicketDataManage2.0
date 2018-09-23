@@ -113,6 +113,12 @@ public class pageUser extends HttpServlet {
                     session.setAttribute("alert","success_search");
                     session.setAttribute("info",info);
                     tickets = user.complex_searchTicket(attr, sear, relat);
+                    // sort
+                    String sort_attr = (String)session.getAttribute("sort_attr");
+                    String sort_type = (String)session.getAttribute("sort_type");
+                    listsort lsort = new listsort();
+                    if(sort_type.equals("ascend"))  lsort.sort(tickets, sort_attr, true);
+                    else lsort.sort(tickets, sort_attr, false);
                     session.setAttribute("tickets", tickets);
                     session.setAttribute("ticketsPerPage", ticketsPerPage);
                 }
@@ -230,7 +236,12 @@ public class pageUser extends HttpServlet {
                     session.setAttribute("sort_attr", "ticketnumber");
                     session.setAttribute("sort_type", "ascend");
                 }
-
+                // sort
+                String sort_attr = (String)session.getAttribute("sort_attr");
+                String sort_type = (String)session.getAttribute("sort_type");
+                listsort lsort = new listsort();
+                if(sort_type.equals("ascend"))  lsort.sort(tickets, sort_attr, true);
+                else lsort.sort(tickets, sort_attr, false);
             }
         }
         int totalTickets = tickets.size();

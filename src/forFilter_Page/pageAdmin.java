@@ -111,6 +111,12 @@ public class pageAdmin extends HttpServlet {
                     session.setAttribute("sort_attr", "id");
                     session.setAttribute("sort_type", "ascend");
                 }
+                // sort
+                String sort_attr = (String)session.getAttribute("sort_attr");
+                String sort_type = (String)session.getAttribute("sort_type");
+                listsort lsort = new listsort();
+                if(sort_type.equals("ascend"))  lsort.sort(users, sort_attr, true);
+                else lsort.sort(users, sort_attr, false);
             }
         }
         int totalUsers = users.size();

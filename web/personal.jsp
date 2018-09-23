@@ -99,7 +99,7 @@
 
     <form class="form-personal" action=".infoModify" method="post" style="text-align: center;" name="personal">
         <h2 class="form-signin-heading">个人信息</h2>
-        <a href="forget.jsp">修改密码</a>
+        <a href="forget_in.jsp">修改密码</a>
         <br>
         <br>
         <table style="font-size:18px;" align="center">

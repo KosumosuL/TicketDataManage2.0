@@ -71,8 +71,8 @@ public class sign_in extends HttpServlet {
                     session.setAttribute("_userid_num_", u.getId_num());
                     session.setAttribute("_usertel_", u.getTel());
                     session.setAttribute("_userview_", u.isView());
-                    session.setAttribute("_usersear_ ", u.isSear());
-                    session.setAttribute("_usertadd_ ", u.isTadd());
+                    session.setAttribute("_usersear_", u.isSear());
+                    session.setAttribute("_usertadd_", u.isTadd());
                     session.setAttribute("_userstatis_", u.isStatis());
                     session.setAttribute("_userinut_", u.isInut());
 
