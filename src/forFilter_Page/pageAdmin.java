@@ -13,6 +13,7 @@ import java.util.*;
 //import forDao.UserDao;
 import forDao.AdminDao;
 import forTest.testPage;
+import forUtility.*;
 import forXml.*;
 
 @WebServlet(name = "pageAdmin", urlPatterns = "/pageAdmin")
@@ -63,6 +64,7 @@ public class pageAdmin extends HttpServlet {
             }
             if(isusersPerPage){
                 users = (List<User>)session.getAttribute("users");
+                // display
                 boolean name_display = req.getParameter("name_display") != null;
                 boolean pwd_display = req.getParameter("pwd_display") != null;
                 boolean baddr_display = req.getParameter("baddr_display") != null;
@@ -70,6 +72,13 @@ public class pageAdmin extends HttpServlet {
                 boolean id_num_display = req.getParameter("id_num_display") != null;
                 boolean tel_display = req.getParameter("tel_display") != null;
                 boolean authority_display = req.getParameter("authority_display") != null;
+                // sort
+                String sort_attr = req.getParameter("sort_attr");
+                String sort_type = req.getParameter("sort_type");
+                listsort lsort = new listsort();
+                if(sort_type.equals("ascend"))  lsort.sort(users, sort_attr, true);
+                else lsort.sort(users, sort_attr, false);
+                // display
                 session.setAttribute("name_display", name_display);
                 session.setAttribute("pwd_display", pwd_display);
                 session.setAttribute("baddr_display", baddr_display);
@@ -78,6 +87,9 @@ public class pageAdmin extends HttpServlet {
                 session.setAttribute("tel_display", tel_display);
                 session.setAttribute("authority_display", authority_display);
                 session.setAttribute("usersPerPage", usersPerPage);
+                // sort
+                session.setAttribute("sort_attr", sort_attr);
+                session.setAttribute("sort_type", sort_type);
             }
             else{
 //                若没有url变量，则必为初始化或者其他servlet跳转
@@ -96,6 +108,8 @@ public class pageAdmin extends HttpServlet {
                     session.setAttribute("bdate_display", true);
                     session.setAttribute("authority_display", true);
                     session.setAttribute("usersPerPage", usersPerPage);
+                    session.setAttribute("sort_attr", "id");
+                    session.setAttribute("sort_type", "ascend");
                 }
             }
         }

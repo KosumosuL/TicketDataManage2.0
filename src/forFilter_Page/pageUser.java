@@ -14,6 +14,7 @@ import java.util.HashMap;
 //import forDao.UserDao;
 import forDao.UserDao;
 import forTest.testPage;
+import forUtility.listsort;
 import forXml.*;
 
 @WebServlet(name = "pageUser", urlPatterns = "/pageUser")
@@ -135,6 +136,13 @@ public class pageUser extends HttpServlet {
                     boolean component_display = req.getParameter("component_display") != null;
                     boolean firstoccurrence_display = req.getParameter("firstoccurrence_display") != null;
                     boolean severity_display = req.getParameter("severity_display") != null;
+                    // sort
+                    String sort_attr = req.getParameter("sort_attr");
+                    String sort_type = req.getParameter("sort_type");
+                    listsort lsort = new listsort();
+                    if(sort_type.equals("ascend"))  lsort.sort(tickets, sort_attr, true);
+                    else lsort.sort(tickets, sort_attr, false);
+                    // display
                     session.setAttribute("ipccustomer_display", ipccustomer_display);
                     session.setAttribute("customercode_display", customercode_display);
                     session.setAttribute("cause_display", cause_display);
@@ -152,6 +160,9 @@ public class pageUser extends HttpServlet {
                     session.setAttribute("firstoccurrence_display", firstoccurrence_display);
                     session.setAttribute("severity_display", severity_display);
                     session.setAttribute("ticketsPerPage", ticketsPerPage);
+                    // sort
+                    session.setAttribute("sort_attr", sort_attr);
+                    session.setAttribute("sort_type", sort_type);
                 }
             }
             else{
@@ -216,6 +227,8 @@ public class pageUser extends HttpServlet {
                     session.setAttribute("severity_display", true);
                     session.setAttribute("ticketstatus_display", true);
                     session.setAttribute("ticketsPerPage", ticketsPerPage);
+                    session.setAttribute("sort_attr", "ticketnumber");
+                    session.setAttribute("sort_type", "ascend");
                 }
 
             }

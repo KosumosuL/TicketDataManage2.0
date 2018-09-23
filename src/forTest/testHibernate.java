@@ -195,6 +195,7 @@ public class testHibernate {
 
     }
 
+
     static public void main(String args[]) {
         //testAdmin();
         for(int i=0;i<665;i++){

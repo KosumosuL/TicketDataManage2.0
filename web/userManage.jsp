@@ -62,7 +62,7 @@
 <body onload="showalert(null)">
 <%--<c:set var="alert" value="${sessionScope.alert}"/>--%>
 <%--<c:if test="${alert!=null}">--%>
-    <%--<%request.getSession().removeAttribute("alert");%>--%>
+<%--<%request.getSession().removeAttribute("alert");%>--%>
 <%--</c:if>--%>
 <c:set var="ticketsPerPage" value="${sessionScope.ticketsPerPage}"/>
 <c:set var="ipccustomer_display" value="${sessionScope.ipccustomer_display}"/>
@@ -92,6 +92,8 @@
 <c:set var="totalPages" value="${requestScope.totalPages}"/>
 <c:set var="page" value="${requestScope.page}"/>
 <c:set var="currentPageTickets" value="${requestScope.currentPageTickets}"/>
+<c:set var="sort_attr" value="${sessionScope.sort_attr}"/>
+<c:set var="sort_type" value="${sessionScope.sort_type}"/>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -130,21 +132,21 @@
                 </li>
                 <li><a>您的权限：</a></li>
                 <li>
-                    <a><input type="checkbox" ${_userview_==true?"checked":""} disabled>修改、删除</a>
-                </li>
-                <li>
+                    <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_userview_==true?"checked":""} disabled>修改、删除</a>
                     <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_usersear_==true?"checked":""} disabled>查询</a>
+                </li>
+                <li>
                     <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_usertadd_==true?"checked":""} disabled>新增</a>
-                </li>
-                <li>
                     <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_userstatis_==true?"checked":""} disabled>统计分析</a>
-                    <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_userinut_==true?"checked":""} disabled>导入导出</a>
                 </li>
                 <li>
-                    <a href="personal.jsp">查看详情</a>
+                    <a style="display: table-cell;width: 150px;vertical-align: middle;"><input type="checkbox" ${_userinut_==true?"checked":""} disabled>导入导出</a>
+                    <a style="display: table-cell;width: 150px;vertical-align: middle;" href="personal.jsp">查看详情</a>
                 </li>
             </ul>
             <form name="formDisplay" action="/.userManage" method="post">
+                <input type="hidden" name="sort_attr">
+                <input type="hidden" name="sort_type">
                 <ul class="nav nav-sidebar">
                     <li><a>工作票字段</a></li>
                     <li>
@@ -181,7 +183,46 @@
                     </li>
                     <li>
                         <a style="width: 150px;display: table-cell;vertical-align: middle;"><input type="checkbox" value="severity_display" name="severity_display" ${severity_display==true?"checked":""}>问题严重程度</a>
-                        <a style="display: table-cell;width: 150px;vertical-align: middle;">
+                    </li>
+                    <li>
+                        <a>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon">排序字段</span>
+                                <select class="selectpicker form-control" name="sort_attr_hidden">
+                                    <option value="ticketnumber" ${sort_attr=="ticketnumber"?'selected':''}>ID</option>
+                                    <option value="ipccustomer" ${sort_attr=="ipccustomer"?'selected':''}>用户全称</option>
+                                    <option value="customercode" ${sort_attr=="customercode"?'selected':''}>用户代码</option>
+                                    <option value="cause" ${sort_attr=="cause"?'selected':''}>原因</option>
+                                    <option value="summary" ${sort_attr=="summary"?'selected':''}>问题描述</option>
+                                    <option value="componenttype" ${sort_attr=="componenttype"?'selected':''}>组件类型</option>
+                                    <option value="ostype" ${sort_attr=="ostype"?'selected':''}>OS类型</option>
+                                    <option value="identifier" ${sort_attr=="identifier"?'selected':''}>标识符</option>
+                                    <option value="ticketstatus" ${sort_attr=="ticketstatus"?'selected':''}>状态</option>
+                                    <option value="lastoccurrence" ${sort_attr=="lastoccurrence"?'selected':''}>闭合时间</option>
+                                    <option value="node" ${sort_attr=="node"?'selected':''}>节点ID</option>
+                                    <option value="resolution" ${sort_attr=="resolution"?'selected':''}>解决方案</option>
+                                    <option value="servername" ${sort_attr=="servername"?'selected':''}>服务器全称</option>
+                                    <option value="alertgroup" ${sort_attr=="alertgroup"?'selected':''}>告警组</option>
+                                    <option value="component" ${sort_attr=="component"?'selected':''}>组件</option>
+                                    <option value="firstoccurrence" ${sort_attr=="firstoccurrence"?'selected':''}>产生时间</option>
+                                    <option value="severity" ${sort_attr=="severity"?'selected':''}>问题严重程度</option>
+                                </select>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon">排序方式</span>
+                                <select class="selectpicker form-control" name="sort_type_hidden">
+                                    <option value="ascend" ${sort_type=="ascend"?'selected':''}>升序</option>
+                                    <option value="descend" ${sort_type=="descend"?'selected':''}>降序</option>
+                                </select>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon">每页显示</span>
                                 <input type="text" class="form-control" value="${ticketsPerPage}" name="ticketsPerPage">
@@ -198,6 +239,8 @@
                                 toastr.warning("每页显示的工作票数必须为正整数");
                                 return false;
                             }
+                            formDisplay.sort_attr.value = formDisplay.sort_attr_hidden.value;
+                            formDisplay.sort_type.value = formDisplay.sort_type_hidden.value;
                             return true;
                         }
                     </script>
