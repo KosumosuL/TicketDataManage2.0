@@ -115,8 +115,8 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a>总览<span class="sr-only">(current)</span></a></li>
-                <li><a href=".filterSearch">查询</a></li>
-                <li><a href=".filterStatis">统计</a></li>
+                <li><a href=".filterSearch">高级查询</a></li>
+                <li><a href=".filterStatis">统计分析</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a>个人信息</a></li>
