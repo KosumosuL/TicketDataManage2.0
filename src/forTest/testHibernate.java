@@ -115,7 +115,7 @@ public class testHibernate {
         System.out.println(tel);
         System.out.println(t.valid_tel(tel));
         AdminDao adm = new AdminDao();
-        adm.addAdmin(id,pwd,name,baddr,bdate,id_num,tel);
+        //adm.addAdmin(id,pwd,name,baddr,bdate,id_num,tel);
     }
 
     static void generate_user(){
@@ -198,9 +198,9 @@ public class testHibernate {
 
     static public void main(String args[]) {
         //testAdmin();
-        for(int i=0;i<665;i++){
+        for(int i=0;i<6;i++){
             generate_admin();
-            generate_user();
+            //generate_user();
             //generate_ticket();
         }
 
